@@ -12,6 +12,12 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Service
         bool AddGame(Game Game);
         bool RemoveGame(Game Game);
         bool PieceNow(NavyBattlePiece Piece);
+        bool ReadyPlayer(UserGame UserGame);
+        bool Hit(NavyBattlePiece Piece);
+        bool Turn(User User);
+        bool End(User User);
+        bool CreateShip(Ship Ship);
+        bool StartGame(UserGame UserGame);
         
     }
 }
