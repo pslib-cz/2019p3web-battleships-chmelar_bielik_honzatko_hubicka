@@ -7,6 +7,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Models
 {
     public class Ship
     {
+        [Key]
         public int Id { get; set; }
         public string Name { get; set; } 
     }
