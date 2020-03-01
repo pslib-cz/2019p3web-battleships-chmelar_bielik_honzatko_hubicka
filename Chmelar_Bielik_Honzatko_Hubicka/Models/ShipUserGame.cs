@@ -15,7 +15,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Models
         public Game GameId { get; set; }
         [ForeignKey("ShipId")]
         public Ship ShipId { get; set; }
-        [ForeignKey("User")]
+        [ForeignKey("UserId")]
         public User UserId { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Models
     {
         [Key]
         public int Id { get; set; }
-        [ForeignKey("ShipPiece")]
+        [ForeignKey("ShipPieceId")]
         public ShipPiece ShipTypeId { get; set; }
         public int PosX { get; set; }
         public int PosY { get; set; }
