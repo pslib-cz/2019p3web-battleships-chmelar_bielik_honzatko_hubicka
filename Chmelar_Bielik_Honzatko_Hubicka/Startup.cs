@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Chmelar_Bielik_Honzatko_Hubicka.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,6 +25,14 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<Chmelar_Bielik_Honzatko_Hubicka.Models.ApplicationDbContext>(
+                o =>
+                {
+                    o.UseSqlite(Configuration.GetConnectionString("GameDb"));
+                });
+
+            services.AddTransient<IGameManipulator, GameManipulator>();
+
             services.AddRazorPages();
         }
 

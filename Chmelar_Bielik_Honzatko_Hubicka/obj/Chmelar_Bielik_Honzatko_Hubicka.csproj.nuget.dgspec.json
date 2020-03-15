@@ -1,24 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Tomáš\\Source\\Repos\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka3\\Chmelar_Bielik_Honzatko_Hubicka\\Chmelar_Bielik_Honzatko_Hubicka.csproj": {}
+    "C:\\Users\\marti\\Source\\Repos\\pslib-cz\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka\\Chmelar_Bielik_Honzatko_Hubicka\\Chmelar_Bielik_Honzatko_Hubicka.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Tomáš\\Source\\Repos\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka3\\Chmelar_Bielik_Honzatko_Hubicka\\Chmelar_Bielik_Honzatko_Hubicka.csproj": {
+    "C:\\Users\\marti\\Source\\Repos\\pslib-cz\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka\\Chmelar_Bielik_Honzatko_Hubicka\\Chmelar_Bielik_Honzatko_Hubicka.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Tomáš\\Source\\Repos\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka3\\Chmelar_Bielik_Honzatko_Hubicka\\Chmelar_Bielik_Honzatko_Hubicka.csproj",
+        "projectUniqueName": "C:\\Users\\marti\\Source\\Repos\\pslib-cz\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka\\Chmelar_Bielik_Honzatko_Hubicka\\Chmelar_Bielik_Honzatko_Hubicka.csproj",
         "projectName": "Chmelar_Bielik_Honzatko_Hubicka",
-        "projectPath": "C:\\Users\\Tomáš\\Source\\Repos\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka3\\Chmelar_Bielik_Honzatko_Hubicka\\Chmelar_Bielik_Honzatko_Hubicka.csproj",
-        "packagesPath": "C:\\Users\\Tomáš\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Tomáš\\Source\\Repos\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka3\\Chmelar_Bielik_Honzatko_Hubicka\\obj\\",
+        "projectPath": "C:\\Users\\marti\\Source\\Repos\\pslib-cz\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka\\Chmelar_Bielik_Honzatko_Hubicka\\Chmelar_Bielik_Honzatko_Hubicka.csproj",
+        "packagesPath": "C:\\Users\\marti\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\marti\\Source\\Repos\\pslib-cz\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka\\Chmelar_Bielik_Honzatko_Hubicka\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Tomáš\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\marti\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -43,6 +43,22 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.1.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[3.1.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.1.2, )"
+            },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[3.1.1, )"

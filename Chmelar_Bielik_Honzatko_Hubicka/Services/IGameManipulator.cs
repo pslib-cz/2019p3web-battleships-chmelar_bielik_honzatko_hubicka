@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Chmelar_Bielik_Honzatko_Hubicka.Service
+namespace Chmelar_Bielik_Honzatko_Hubicka.Services
 {
-    interface IGame
+    interface IGameManipulator
     {
         bool AddPlayer(User User);
         bool AddGame(Game Game);
