@@ -12,7 +12,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Models
         [Key]
         public Guid GameId { get; set; }
         public int MaxUsers { get; set; }
-        //public  GameState { get; set; }
+        //public GameState { get; set; }
         [ForeignKey("UserId")]
         public User OwnerId { get; set; }
         [ForeignKey("UserId")]
@@ -20,5 +20,12 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Models
         public int GameSize { get; set; }
         public ICollection<UserGame> UserGames { get; set; }
         public ICollection<ShipGame> ShipGames { get; set; }
+
+        public enum GameState
+        {
+            Preparing = 0,
+            Fighting = 1,
+            End = 2
+        }
     }
 }

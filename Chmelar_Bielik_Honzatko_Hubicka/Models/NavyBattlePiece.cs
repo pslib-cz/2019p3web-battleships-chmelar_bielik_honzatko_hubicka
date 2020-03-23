@@ -16,5 +16,14 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Models
         public int PosX { get; set; }
         public int PosY { get; set; }
         public bool IsHidden { get; set; }
+
+        public enum BattlePieceState
+        {
+            Ship = 0,
+            Water = 1,
+            ShipHidden = 2,
+            WaterHidden = 3,
+            Margin = 4
+        }
     }
 }
