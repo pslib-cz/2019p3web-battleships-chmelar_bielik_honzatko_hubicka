@@ -15,10 +15,13 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Models
         public DbSet<Ship> Ships { get; set; }
         public DbSet<ShipGame> ShipGames { get; set; }
         public DbSet<ShipPiece> ShipPieces { get; set; }
-        public DbSet<ShipUserGame> ShipUserGames { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserGame> UserGames { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        {
+            options.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Battleships;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

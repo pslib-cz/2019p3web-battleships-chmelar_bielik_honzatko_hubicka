@@ -18,5 +18,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Models
         [ForeignKey("UserId")]
         public User CurrentPlayerId { get; set; }
         public int GameSize { get; set; }
+        public ICollection<UserGame> UserGames { get; set; }
+        public ICollection<ShipGame> ShipGames { get; set; }
     }
 }

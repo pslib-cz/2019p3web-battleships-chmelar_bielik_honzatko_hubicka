@@ -10,6 +10,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Models
     {
         [Key]
         public int Id { get; set; }
-        public string Name { get; set; } 
+        public string Name { get; set; }
+        public ICollection<ShipGame> ShipGames { get; set; }
     }
 }

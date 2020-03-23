@@ -16,7 +16,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             _db = db;
         }
 
-        public bool AddGame(Game Game)
+        public Game AddGame(Game Game)
         {
             var game = _db.Games.SingleOrDefault(g => g.GameId == Game.GameId);
             if (game is null)
@@ -27,7 +27,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             throw new KeyNotFoundException("Game:" + Game + "already exists.");
         }
 
-        public bool AddPlayer(User User)
+        public User AddPlayer(User User)
         {
             var player = _db.Users.SingleOrDefault(u => u.Name == User.Name);
             if (player is null)
@@ -38,7 +38,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             throw new KeyNotFoundException("Player:" + User + "already exists.");
         }
 
-        public bool CreateShip(Ship Ship)
+        public Ship CreateShip(Ship Ship)
         {
             var ship = _db.Ships.SingleOrDefault(s => s.Name == Ship.Name);
             if (ship is null)

@@ -12,5 +12,6 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Models
         public int Id { get; set; }
         public string Name { get; set; } //Email
         public string Password { get; set; }
+        public ICollection<UserGame> UserGames { get; set; }
     }
 }

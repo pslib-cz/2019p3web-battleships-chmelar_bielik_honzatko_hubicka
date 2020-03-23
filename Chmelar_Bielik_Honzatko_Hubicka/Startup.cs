@@ -25,11 +25,6 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<Chmelar_Bielik_Honzatko_Hubicka.Models.ApplicationDbContext>(
-                o =>
-                {
-                    o.UseSqlite(Configuration.GetConnectionString("GameDb"));
-                });
 
             services.AddTransient<IGameManipulator, GameManipulator>();
 

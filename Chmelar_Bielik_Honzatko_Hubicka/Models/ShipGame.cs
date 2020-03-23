@@ -10,7 +10,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Models
     public class ShipGame
     {
         public int Id { get; set; }
-        [Key]
+        [ForeignKey("GameId")]
         public Game GameId { get; set; }
         [ForeignKey("ShipId")]
         public Ship ShipId { get; set; }
