@@ -11,19 +11,17 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Models
     {
         [Key]
         public int Id { get; set; }
-        [ForeignKey("ShipPieceId")]
-        public ShipPiece ShipTypeId { get; set; }
+        [ForeignKey("BoardId")]
+        public int BoardId { get; set; }
         public int PosX { get; set; }
         public int PosY { get; set; }
-        public bool IsHidden { get; set; }
-
+        public BattlePieceState State { get; set; }
+        public ICollection<Game> GamePieces { get; set; }
         public enum BattlePieceState
         {
             Ship = 0,
             Water = 1,
-            ShipHidden = 2,
-            WaterHidden = 3,
-            Margin = 4
+            Hit = 2
         }
     }
 }
