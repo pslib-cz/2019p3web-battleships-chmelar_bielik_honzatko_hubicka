@@ -21,7 +21,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             var game = _db.Games.SingleOrDefault(g => g.GameId == Game.GameId);
             if (game is null)
             {
-                return new Game() { GameId = Game.GameId, MaxUsers = Game.MaxUsers, OwnerId = Game.OwnerId, GameSize = Game.GameSize, CurrentPlayerId = Game.CurrentPlayerId };
+                return new Game() { GameId = Game.GameId, Player1Id = Game.Player1Id, Player2Id = Game.Player2Id, CurrentPlayerId = Game.CurrentPlayerId };
             }
 
             throw new KeyNotFoundException("Game:" + Game + "already exists.");
@@ -29,26 +29,14 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
 
         public User AddPlayer(User User)
         {
-            var player = _db.Users.SingleOrDefault(u => u.Name == User.Name);
+            var player = _db.Users.SingleOrDefault(u => u.UserName == User.UserName);
             if (player is null)
             {
-                return new User() { Id = User.Id, Name = User.Name, Password = User.Password };
+                return new User() { Id = User.Id, UserName = User.UserName, Password = User.Password };
             }
 
             throw new KeyNotFoundException("Player:" + User + "already exists.");
         }
-
-        public Ship CreateShip(Ship Ship)
-        {
-            var ship = _db.Ships.SingleOrDefault(s => s.Name == Ship.Name);
-            if (ship is null)
-            {
-                return new Ship() { Id = Ship.Id, Name = Ship.Name };
-            }
-
-            throw new KeyNotFoundException("Ship:" + Ship + "already exists.");
-        }
-
         public bool End(User User)
         {
             throw new NotImplementedException();

@@ -15,7 +15,6 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
         bool Hit(NavyBattlePiece Piece);
         bool Turn(User User);
         bool End(User User);
-        Ship CreateShip(Ship Ship);
         bool StartGame(UserGame UserGame);
         bool Login(User User);
         bool Register(User User);

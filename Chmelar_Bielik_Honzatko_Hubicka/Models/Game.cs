@@ -21,6 +21,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Models
         public int Player2Board { get; set; }
         public ICollection<Game> GamePieces { get; set; }
         public ICollection<UserGame> UserGames { get; set; }
+        public int CurrentPlayerId { get; set; }
         public enum GameState
         {
             Preparing = 0,
