@@ -21,7 +21,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             var game = _db.Games.SingleOrDefault(g => g.GameId == Game.GameId);
             if (game is null)
             {
-                return new Game() { GameId = Game.GameId, Player1Id = Game.Player1Id, Player2Id = Game.Player2Id, CurrentPlayerId = Game.CurrentPlayerId };
+                return new Game() { GameId = Game.GameId, OwnerId = Game.OwnerId, PlayerId = Game.PlayerId, CurrentPlayerId = Game.CurrentPlayerId };
             }
 
             throw new KeyNotFoundException("Game:" + Game + "already exists.");
@@ -32,7 +32,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             var player = _db.Users.SingleOrDefault(u => u.UserName == User.UserName);
             if (player is null)
             {
-                return new User() { Id = User.Id, UserName = User.UserName, Password = User.Password };
+                return new User(); //{ Id = User.Id, UserName = User.UserName, Password = User.Password };
             }
 
             throw new KeyNotFoundException("Player:" + User + "already exists.");
@@ -52,7 +52,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             throw new NotImplementedException();
         }
 
-        public bool ReadyPlayer(UserGame UserGame)
+        public bool ReadyPlayer(Game Game)
         {
             throw new NotImplementedException();
         }
@@ -67,7 +67,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             throw new NotImplementedException();
         }
 
-        public bool StartGame(UserGame UserGame)
+        public bool StartGame(Game Game)
         {
             throw new NotImplementedException();
         }

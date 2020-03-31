@@ -7,13 +7,8 @@ using System.Threading.Tasks;
 
 namespace Chmelar_Bielik_Honzatko_Hubicka.Models
 {
-    public class User
+    public class User : IdentityUser
     {
-        [Key]
-        public int Id { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public string Email { get; set; }
-        public ICollection<UserGame> UserGames { get; set; }
+        public ICollection<Game> GamesPlay { get; set; }
     }
 }

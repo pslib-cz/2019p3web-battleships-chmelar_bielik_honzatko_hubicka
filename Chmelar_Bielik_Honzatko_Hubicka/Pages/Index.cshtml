@@ -17,17 +17,20 @@
 
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link text-dark">Přihlášení</a>
+                                <a class="nav-link text-dark" href="../Identity/Account/Register">Registrovat</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="../Identity/Account/Login">Přihlášení</a>
                             </li>
                             <li class="nav-item">
 
-                                <button type="submit" class="nav-link btn btn-link text-dark">Odhlásit</button>
+                                <button type="submit" class="nav-link btn btn-link text-dark" href="../Identity/Account/Logout">Odhlásit</button>
                             </li>
                         </ul>
 
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
-                                <a class="nav-link text-dark" href="/battleships/Game/ListGames">Seznam her</a>
+                                <a class="nav-link text-dark" href="/battleships/Game/ActiveGames">Seznam her</a>
                             </li>
                         </ul>
                     </div>
@@ -36,8 +39,8 @@
         </header>
         <div class="container">
             <h1 class="display-4">Vítejte ve hře lodě!</h1>
-            <a class="btn btn-info">vytvořit novou hru</a>
-            <a class="btn btn-info">připojit se ke hře</a>
+            <a class="btn btn-info" href="/Preparation">vytvořit novou hru</a>
+            <a class="btn btn-info" href="/ActiveGames">připojit se ke hře</a>
         </div>
         <footer class="border-top footer text-muted">
             <div class="container">

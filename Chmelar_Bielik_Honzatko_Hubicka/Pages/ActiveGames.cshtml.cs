@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Chmelar_Bielik_Honzatko_Hubicka
+namespace Chmelar_Bielik_Honzatko_Hubicka.Pages
 {
     public class ActiveGamesModel : PageModel
     {

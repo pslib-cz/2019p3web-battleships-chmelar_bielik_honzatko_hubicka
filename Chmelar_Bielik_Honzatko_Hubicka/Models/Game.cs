@@ -11,28 +11,19 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Models
     {
         [Key]
         public Guid GameId { get; set; }
-        [ForeignKey("UserId")]
-        public User Player1Id { get; set; } //OWNER
-        public User Player2Id { get; set; }
+        public string OwnerId { get; set; }
+        public string PlayerId { get; set; }
+        [ForeignKey("OwnerId")]
+        public User Owner { get; set; } //OWNER
+        [ForeignKey("PlayerId")]
+        public User Player { get; set; }
         public GameState Gamestate { get; set; }
-        public PlayerState Player1 { get; set; }
-        public PlayerState Player2 { get; set; }
+        public PlayerState OwnerState { get; set; }
+        public PlayerState PlayerState { get; set; }
         public int Player1Board { get; set; }
         public int Player2Board { get; set; }
         public ICollection<Game> GamePieces { get; set; }
-        public ICollection<UserGame> UserGames { get; set; }
         public int CurrentPlayerId { get; set; }
-        public enum GameState
-        {
-            Preparing = 0,
-            Fighting = 1,
-            End = 2
-        }
-        public enum PlayerState
-        {
-            PreperingForGame = 0,
-            InGame = 1,
-            LFGame = 2
-        }
+        public User CurrentPlayer { get; set; }
     }
 }

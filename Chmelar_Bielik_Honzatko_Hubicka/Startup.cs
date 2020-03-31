@@ -27,12 +27,18 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(o =>
+            services.AddDbContext<ApplicationDbContext>(options =>
             {
-                o.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddDefaultIdentity<User>(o => {
+                o.SignIn.RequireConfirmedEmail = false;
+                o.SignIn.RequireConfirmedAccount = false;
+                o.Password.RequireDigit = false;
+                o.Password.RequireUppercase = false;
+                o.Password.RequireNonAlphanumeric = false;
+            }).AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddTransient<IGameManipulator, GameManipulator>();
 
             services.AddRazorPages();
