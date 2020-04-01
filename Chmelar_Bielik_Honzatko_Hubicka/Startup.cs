@@ -6,6 +6,7 @@ using Chmelar_Bielik_Honzatko_Hubicka.Models;
 using Chmelar_Bielik_Honzatko_Hubicka.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +40,14 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
                 o.Password.RequireUppercase = false;
                 o.Password.RequireNonAlphanumeric = false;
             }).AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddTransient<IGameManipulator, GameManipulator>();
+
+            services.AddDistributedMemoryCache();
+            services.AddSession();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddScoped<GameSessionStorage<List<Guid>>>();
+
+            services.AddScoped<IGameManipulator, GameManipulator>();
 
             services.AddRazorPages();
         }
@@ -64,6 +72,8 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
