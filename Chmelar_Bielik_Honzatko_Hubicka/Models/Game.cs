@@ -13,10 +13,8 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Models
         public Guid GameId { get; set; }
         public string OwnerId { get; set; }
         public string PlayerId { get; set; }
-        [ForeignKey("OwnerId")]
-        public User Owner { get; set; } //OWNER
-        [ForeignKey("PlayerId")]
-        public User Player { get; set; }
+        public User Owner { get; set; } //OWNER 1st player
+        public User Player { get; set; } //2nd player
         public GameState Gamestate { get; set; }
         public PlayerState OwnerState { get; set; }
         public PlayerState PlayerState { get; set; }

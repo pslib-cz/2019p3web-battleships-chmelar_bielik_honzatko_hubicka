@@ -23,13 +23,32 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Models
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Game>()
-            .HasOne(g => g.CurrentPlayer)
-            .WithMany(u => u.GamesPlay)
-            .OnDelete(DeleteBehavior.NoAction);
-
+                .HasOne(g => g.CurrentPlayer)
+                .WithMany(u => u.GamesPlay)
+                .HasForeignKey(u => u.CurrentPlayerId)
+                .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<User>()
-            .HasMany(u => u.GamesPlay)
-            .WithOne(g => g.CurrentPlayer);
+                .HasMany(u => u.GamesPlay)
+                .WithOne(g => g.CurrentPlayer);
+
+            modelBuilder.Entity<Game>()
+                .HasOne(g => g.Owner)
+                .WithMany(u => u.GamesOwner)
+                .HasForeignKey(g => g.OwnerId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.GamesOwner)
+                .WithOne(g => g.Owner)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Game>()
+                .HasOne(g => g.Player)
+                .WithMany(u => u.GamesPlayer)
+                .HasForeignKey(g => g.PlayerId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.GamesPlayer)
+                .WithOne(g => g.Player);
         }
     }
 }

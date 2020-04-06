@@ -71,6 +71,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseSession();
