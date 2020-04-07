@@ -49,6 +49,25 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Models
             modelBuilder.Entity<User>()
                 .HasMany(u => u.GamesPlayer)
                 .WithOne(g => g.Player);
+
+
+            modelBuilder.Entity<NavyBattlePiece>()
+                .HasOne(g => g.User)
+                .WithMany(u => u.Pieces)
+                .HasForeignKey(g => g.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Pieces)
+                .WithOne(g => g.User);
+
+            modelBuilder.Entity<NavyBattlePiece>()
+                .HasOne(g => g.Game)
+                .WithMany(u => u.GamePieces)
+                .HasForeignKey(g => g.GameId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Game>()
+                .HasMany(u => u.GamePieces)
+                .WithOne(g => g.Game);
         }
     }
 }

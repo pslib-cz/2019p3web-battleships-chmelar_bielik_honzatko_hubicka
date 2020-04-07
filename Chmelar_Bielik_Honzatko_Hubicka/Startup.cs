@@ -30,7 +30,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
         {
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
 
             services.AddDefaultIdentity<User>(o => {

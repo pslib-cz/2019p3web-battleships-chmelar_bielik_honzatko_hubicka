@@ -42,15 +42,15 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             throw new NotImplementedException();
         }
 
-        public NavyBattlePiece.BattlePieceState Hit(NavyBattlePiece Piece)
+        public BattlePieceState Hit(NavyBattlePiece Piece)
         {
             var piece = _db.NavyBattlePieces.SingleOrDefault(p => p.State == Piece.State);
-            if (piece.State == NavyBattlePiece.BattlePieceState.Ship)
+            if (piece.State == BattlePieceState.Ship)
             {
-                return piece.State = NavyBattlePiece.BattlePieceState.Hit;
+                return piece.State = BattlePieceState.Hitted_Ship;
             }
 
-            else if (piece.State == NavyBattlePiece.BattlePieceState.Water)
+            else if (piece.State == BattlePieceState.Water)
             {
                 throw new KeyNotFoundException("Piece (x, y):" + Piece.PosX + ", " + Piece.PosY + "is a water.");
             }

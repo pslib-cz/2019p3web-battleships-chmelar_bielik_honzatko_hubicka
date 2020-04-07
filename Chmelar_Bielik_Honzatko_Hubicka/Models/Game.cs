@@ -20,8 +20,8 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Models
         public PlayerState PlayerState { get; set; }
         public int Player1Board { get; set; }
         public int Player2Board { get; set; }
-        public ICollection<Game> GamePieces { get; set; }
-        public int CurrentPlayerId { get; set; }
+        public ICollection<NavyBattlePiece> GamePieces { get; set; }
+        public string CurrentPlayerId { get; set; }
         public User CurrentPlayer { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
         Game AddGame(Game Game);
         bool RemoveGame(Game Game);
         bool ReadyPlayer(Game UserGame);
-        NavyBattlePiece.BattlePieceState Hit(NavyBattlePiece Piece);
+        BattlePieceState Hit(NavyBattlePiece Piece);
         bool Turn(User User);
         bool End(User User);
         bool StartGame(Game Game);
