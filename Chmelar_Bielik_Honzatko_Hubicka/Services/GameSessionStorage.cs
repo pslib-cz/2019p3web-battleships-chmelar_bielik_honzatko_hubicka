@@ -17,12 +17,12 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             _session = _httpContext.HttpContext.Session;
         }
 
-        private Guid LoadGame()
+        public Guid LoadGame()
         {
             return _httpContext.HttpContext.Session.Get<Guid>("GameKey");
         }
 
-        private void SetGameId(Guid data)
+        public void SetGameId(Guid data)
         {
             Guid GameId = LoadGame();
             GameId = data;

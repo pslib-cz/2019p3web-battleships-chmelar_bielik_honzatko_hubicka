@@ -52,12 +52,12 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
 
             else if (piece.State == BattlePieceState.Water)
             {
-                throw new KeyNotFoundException("Piece (x, y):" + Piece.PosX + ", " + Piece.PosY + "is a water.");
+                return piece.State = BattlePieceState.Hitted_Water;
             }
 
             else
             {
-                throw new KeyNotFoundException("Piece (x, y):" + Piece.PosX + ", " + Piece.PosY + "already hitted.");
+                return piece.State = BattlePieceState.Unknown;
             }
         }
 

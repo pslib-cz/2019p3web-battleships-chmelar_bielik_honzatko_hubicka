@@ -15,26 +15,14 @@
 <div class="Desk">
     <table class="table">
         <tbody>
-            @for (var i = 0; i < 10; i++)
+            @for (var i = Model.Piece.PosX; i < 10; i++)
             {
                 <tr>
-                    @for (var k = 0; k < 10; k++)
+                    @for (var k = Model.Piece.PosY; k < 10; k++)
                     {
-                        <td class="game-piece">@i  @k</td>
-                    }
-                </tr>
-            }
-        </tbody>
-    </table>
-
-    <table class="table">
-        <tbody>
-            @for (var i = 0; i < 10; i++)
-            {
-                <tr>
-                    @for (var k = 0; k < 10; k++)
-                    {
-                        <td class="game-piece">@i  @k</td>
+                        <td class="game-piece" bgcolor="@Model.Color">
+                            <a class="btn btn-outline-light" asp-page-handler="Position" asp-route-posx="@i" asp-route-posy="@k">[@i, @k]</a>
+                        </td>
                     }
                 </tr>
             }
