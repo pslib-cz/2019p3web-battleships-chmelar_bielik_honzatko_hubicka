@@ -1,51 +1,31 @@
 ﻿@page
+@using Microsoft.AspNetCore.Identity
+@using Chmelar_Bielik_Honzatko_Hubicka.Models
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
 }
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 
-    <body>
-        <header>
-            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-                <div class="container">
-                    <a class="navbar-brand">BattleShips</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" href="../Identity/Account/Register">Registrovat</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" href="../Identity/Account/Login">Přihlášení</a>
-                            </li>
-                            <li class="nav-item">
-
-                                <button type="submit" class="nav-link btn btn-link text-dark" href="../Identity/Account/Logout">Odhlásit</button>
-                            </li>
-                        </ul>
-
-                        <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" href="/battleships/Game/ActiveGames">Seznam her</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </header>
-        <div class="container">
-            <h1 class="display-4">Vítejte ve hře lodě!</h1>
+<body>
+    <div class="container">
+        <h1 class="display-4">Vítejte ve hře lodě!</h1>
+        @if (SignInManager.IsSignedIn(User))
+        {
             <a class="btn btn-info" href="/Preparation">vytvořit novou hru</a>
             <a class="btn btn-info" href="/ActiveGames">připojit se ke hře</a>
+        }
+        else
+        {
+            <a class="btn btn-info" href="../Identity/Account/Login">Přihlášení</a>
+            <a class="btn btn-info" href="../Identity/Account/Register">Registrovat</a>
+        }
+    </div>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - BattleShips v0.6 - <a href="/battleships/Privacy">Privacy</a>
         </div>
-        <footer class="border-top footer text-muted">
-            <div class="container">
-                &copy; 2020 - BattleShips v0.6 - <a href="/battleships/Privacy">Privacy</a>
-            </div>
-        </footer>
-    </body>
+    </footer>
+</body>
 
