@@ -7,9 +7,10 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Models
 {
     public enum BattlePieceState
     {
-        Ship = 0,
-        Water = 1,
-        Hitted_Water = 2,
-        Hitted_Ship = 3
+        Unknown = 0,
+        Ship = 1,
+        Water = 2,
+        Hitted_Water = 3,
+        Hitted_Ship = 4
     }
 }
