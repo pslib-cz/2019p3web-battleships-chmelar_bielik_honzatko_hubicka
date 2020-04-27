@@ -9,7 +9,6 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Models
 {
     public class ApplicationDbContext : IdentityDbContext<User>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<Game> Games { get; set; }
         public DbSet<NavyBattlePiece> NavyBattlePieces { get; set; }
