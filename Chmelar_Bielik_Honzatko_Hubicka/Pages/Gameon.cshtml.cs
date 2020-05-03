@@ -15,61 +15,31 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
     {
         readonly GameManipulator _gm;
         readonly GameSessionStorage<Guid> _gss;
-        readonly ApplicationDbContext _db;
+        readonly GameLogic _gl;
+        
+        readonly Guid _gameId;
+        
+        public string Color { get; set; } //Color of the cell.
+        public List<NavyBattlePiece> Pieces { get; set; }
 
-        public NavyBattlePiece Piece { get; set; } //For selecting of piece to hit.
-        public NavyBattlePiece Piece02 { get; set; } //For selecting of piece to hit.
-        public Color Color { get; set; } //Color of the cell.
-        public Guid GameId { get; set; }
-
-        public GameonModel()
+        public GameonModel(GameManipulator gm, GameSessionStorage<Guid> gss, GameLogic gl)
         {
-            Piece = new NavyBattlePiece();
-            Color = new Color();
+            Color = "unknown";
+            _gm = gm;
+            _gss = gss;
+            _gl = gl;
+
+            _gameId = _gss.LoadGame("GameKey");
         }
 
         public void OnGet()
         {
-            var piece = _db.NavyBattlePieces.SingleOrDefault(nbp => nbp.GameId == GameId);
-
-            _gss.SetGameId(piece.GameId);
-            _gss.LoadGame();
-
-            if (piece != null)
-            {
-                Piece = piece;
-            }
-
-            if (Piece02.State == BattlePieceState.Hitted_Water)
-            {
-                Color = Color.Aqua;
-            }
-
-            else if (Piece02.State == BattlePieceState.Hitted_Ship)
-            {
-                Color = Color.Black;
-            }
-
-            else
-            {
-                Color = Color.White;
-            }
-        }
-
-        public void OnGetPosition(int posX, int posY) 
-        {
-            Piece02.PosX = posX;
-            Piece02.PosY = posY;
-
-            if (Piece02 != null)
-            {
-                _gm.Hit(Piece02);
-            }
+            Pieces = _gl.GetBattlePieces(_gameId);
         }
 
         public void OnPostMessage(string text) //For messages.
         {
-            var piece = _db.NavyBattlePieces.SingleOrDefault(nbp => nbp.GameId == GameId);
+            /*var piece = _db.NavyBattlePieces.SingleOrDefault(nbp => nbp.GameId == GameId);
 
             if (piece is null)
             {
@@ -89,7 +59,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
             else
             {
                 throw new NotImplementedException();
-            }
+            }*/
 
             TempData.AddMessage("messagebox", TempDataExtension.MessageType.success, text);
         }

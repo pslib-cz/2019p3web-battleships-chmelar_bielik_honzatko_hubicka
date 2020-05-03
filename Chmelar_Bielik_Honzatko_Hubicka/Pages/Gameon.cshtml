@@ -12,20 +12,5 @@
 <partial name="_GameMessages" model="key" />
 
 <h4>Player - Identifycator of User</h4>
-<div class="Desk">
-    <table class="table">
-        <tbody>
-            @for (var i = Model.Piece.PosX; i < 10; i++)
-            {
-                <tr>
-                    @for (var k = Model.Piece.PosY; k < 10; k++)
-                    {
-                        <td class="game-piece" bgcolor="@Model.Color">
-                            <a class="btn btn-outline-light" asp-page-handler="Position" asp-route-posx="@i" asp-route-posy="@k">[@i, @k]</a>
-                        </td>
-                    }
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+
+<partial name="_GameDesk" model="@Model.Pieces" />

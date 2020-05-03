@@ -10,23 +10,25 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
     public class GameSessionStorage<Guid>
     {
         readonly ISession _session;
-        readonly IHttpContextAccessor _httpContext;
 
-        public GameSessionStorage()
+        public GameSessionStorage(IHttpContextAccessor httpContext)
         {
-            _session = _httpContext.HttpContext.Session;
+            _session = httpContext.HttpContext.Session;
         }
 
-        public Guid LoadGame()
+        public Guid LoadGame(string key)
         {
-            return _httpContext.HttpContext.Session.Get<Guid>("GameKey");
+            Guid result = _session.Get<Guid>(key);
+            if (result == null)
+            {
+                result = default(Guid);
+            }
+            return result;
         }
 
-        public void SetGameId(Guid data)
+        public void SaveGame(string key, Guid data)
         {
-            Guid GameId = LoadGame();
-            GameId = data;
-            _httpContext.HttpContext.Session.Set("GameKey", data);
+            _session.Set(key, data);
         }
     }
 }

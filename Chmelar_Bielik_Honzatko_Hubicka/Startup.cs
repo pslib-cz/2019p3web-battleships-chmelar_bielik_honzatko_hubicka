@@ -48,6 +48,8 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
             services.AddScoped<GameSessionStorage<List<Guid>>>();
 
             services.AddScoped<IGameManipulator, GameManipulator>();
+            services.AddScoped<IGameLogic, GameLogic>();
+
             services.AddScoped<Identity>();
 
             services.AddRazorPages();
