@@ -8,7 +8,7 @@
     <div class="container">
         <main role="main" class="pb-3">
             <h1>Připojení ke hře</h1>
-            <h2>Games</h2>
+            <h2> My Games</h2>
             <div class="table-responsive-sm">
                 <table class="table table-striped table-bordered">
                     <thead>
@@ -19,7 +19,27 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.GameLists)
+                        @foreach (var item in Model.MyGameLists)
+                        {
+                            <tr>
+                                <td>@item.GameState</td>
+                                <td>@item.Player1</td>
+                                <td>@item.Player2</td>
+                                <th></th>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Stav hry</th>
+                            <th>Hráč 1</th>
+                            <th>Hráč 2</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.JoinGameLists)
                         {
                             <tr>
                                 <td>@item.GameState</td>

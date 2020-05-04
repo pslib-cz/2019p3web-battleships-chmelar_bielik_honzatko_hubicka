@@ -18,7 +18,8 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
         bool Login(User User);
         bool Register(User User);
         List<User> UsersList();
-        List<Game> GamesList();
+        List<Game> MyGamesList();
+        List<Game> JoinGamesList();
 
     }
 }

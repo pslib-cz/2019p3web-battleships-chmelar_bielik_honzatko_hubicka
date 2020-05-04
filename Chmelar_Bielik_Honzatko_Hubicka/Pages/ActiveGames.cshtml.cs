@@ -17,22 +17,22 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Pages
         public ActiveGamesModel(IGameManipulator gameManipulator)
         {
             _gameManipulator = gameManipulator;
-            GameLists = new List<GameOnList>();
+            MyGameLists = new List<GameOnList>();
+            JoinGameLists = new List<GameOnList>();
         }
         public Guid gameId { get; set; }
         public List<Game> Games { get; set; }
         public List<User> Users { get; set; }
-        public List<GameOnList> GameLists { get; set; }
+        public List<GameOnList> MyGameLists { get; set; }
+        public List<GameOnList> JoinGameLists { get; set; }
         public void OnGet()
         {
             Games = new List<Game>();
-            Games = _gameManipulator.GamesList();
+            Games = _gameManipulator.MyGamesList();
+            Games = new List<Game>();
+            Games = _gameManipulator.JoinGamesList();
             Users = new List<User>();
             Users = _gameManipulator.UsersList();
-            var user = this.HttpContext.User
-                .FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "";
-            var user2 = this.HttpContext.User
-                .FindFirst(System.Security.Claims.ClaimTypes.Anonymous)?.Value ?? "";
         }
     }
 }

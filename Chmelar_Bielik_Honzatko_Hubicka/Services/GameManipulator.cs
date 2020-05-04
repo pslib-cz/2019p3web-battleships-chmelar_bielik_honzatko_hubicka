@@ -68,7 +68,17 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             return piece;
         }
 
+        public List<Game> JoinGamesList()
+        {
+            throw new NotImplementedException();
+        }
+
         public bool Login(User User)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Game> MyGamesList()
         {
             throw new NotImplementedException();
         }
