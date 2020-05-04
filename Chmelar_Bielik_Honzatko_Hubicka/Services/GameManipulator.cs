@@ -42,6 +42,11 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             throw new NotImplementedException();
         }
 
+        public List<Game> GamesList()
+        {
+            throw new NotImplementedException();
+        }
+
         public NavyBattlePiece Hit(BattlePieceState State)
         {
             var piece = _db.NavyBattlePieces.SingleOrDefault(p => p.State == State);
@@ -89,6 +94,11 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
         }
 
         public bool Turn(User User)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<User> UsersList()
         {
             throw new NotImplementedException();
         }
