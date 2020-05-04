@@ -9,13 +9,13 @@
 <div class="Desk">
     <table class="table">
         <tbody>
-            @foreach (var posY in pieces.OrderBy(p => p.PosY))
+            @foreach (var row in pieces.OrderBy(p => new { p.PosY, p.PosX }).GroupBy(p => p.PosY))
             {
                 <tr>
-                    @foreach (var posX in pieces.OrderBy(p => p.PosX)
+                    @foreach (var piece in row)
                     {
                         <td class="game-piece">
-                            <a class="btn btn-outline-light">[@posX, @posY]</a>
+                            <a class="btn btn-outline-light">[@piece.PosX, @piece.PosY]</a>
                         </td>
                     }
                 </tr>
