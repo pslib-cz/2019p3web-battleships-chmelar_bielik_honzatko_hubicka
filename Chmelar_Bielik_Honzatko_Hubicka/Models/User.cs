@@ -13,5 +13,6 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Models
         public ICollection<Game> GamesOwner { get; set; } //Owner v Game
         public ICollection<Game> GamesPlayer { get; set; } //Player v Game
         public ICollection<NavyBattlePiece> Pieces { get; set; }
+        public PlayerState PlayerState { get; set; }
     }
 }

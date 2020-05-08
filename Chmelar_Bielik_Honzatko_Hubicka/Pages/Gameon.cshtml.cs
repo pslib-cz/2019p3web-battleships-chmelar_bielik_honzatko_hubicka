@@ -13,28 +13,20 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
 {
     public class GameonModel : PageModel
     {
-        readonly GameManipulator _gm;
-        readonly GameSessionStorage<Guid> _gss;
         readonly GameLogic _gl;
-        
-        readonly Guid _gameId;
         
         public string Color { get; set; } //Color of the cell.
         public List<NavyBattlePiece> Pieces { get; set; }
 
-        public GameonModel(GameManipulator gm, GameSessionStorage<Guid> gss, GameLogic gl)
+        public GameonModel(GameLogic gl)
         {
             Color = "unknown";
-            _gm = gm;
-            _gss = gss;
             _gl = gl;
-
-            _gameId = _gss.LoadGame("GameKey");
         }
 
         public void OnGet()
         {
-            Pieces = _gl.GetBattlePieces(_gameId);
+            Pieces = _gl.GetBattlefield("GameKey");
         }
 
         public void OnPostMessage(string text) //For messages.
