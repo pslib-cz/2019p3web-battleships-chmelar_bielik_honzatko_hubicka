@@ -52,20 +52,20 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             Game activeGame = GetGame(gameKey);
             string activeUserId = _gss.GetUserId();
 
-            User activeUser = _db.Users.SingleOrDefault(u => u.Id == activeGame.CurrentPlayerId);
-            User hitUser = _db.Users.SingleOrDefault(u => u.Id == activeUserId);
+            Game activeUser = _db.Games.SingleOrDefault(u => u.CurrentPlayer.Id == activeGame.CurrentPlayer.Id);
+            Game hitUser = _db.Games.SingleOrDefault(u => u.CurrentPlayer.Id == activeUserId);
 
             if (activeGame.Gamestate == GameState.End)
             {
                 return "This game already ended, so you can't play.";
             }
 
-            if (hitUser.Id != activeUser.Id)
+            if (hitUser.CurrentPlayerId != activeUser.CurrentPlayer.Id)
             {
                 return "It is not your turn.";
             }
 
-            if (piece.UserId == hitUser.Id)
+            if (piece.UserId == hitUser.CurrentPlayer.Id)
             {
                 return "You can't hit your own piece!";
             }
@@ -136,38 +136,39 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             return result;
         }
 
-        private void ContinueInGame(User hitUser)
+        private void ContinueInGame(Game hitUser)
         {
             int userRound = 0;
 
             userRound++;
-            List<User> listUsers = _db.Users.Where(u => u.GamesPlay == hitUser.GamesPlay).OrderBy(u => u.Id).ToList();
-            User nextPlayer = new User();
-            int index = listUsers.FindIndex(u => u.Id == hitUser.Id);
+            List<Game> listUsers = _db.Games.Where(u => u.GameId == hitUser.GameId).OrderBy(u => u.CurrentPlayer.Id).ToList();
+            Game nextPlayer = new Game();
+            int index = listUsers.FindIndex(u => u.CurrentPlayer.Id == hitUser.CurrentPlayer.Id);
 
             if (userRound == 1)
             {
-                nextPlayer = listUsers[index++];
+                nextPlayer.CurrentPlayer = listUsers[index++].CurrentPlayer;
                 userRound = 0;
             }
 
             else
             {
-                nextPlayer = listUsers[0];
+                nextPlayer.CurrentPlayer = listUsers[0].CurrentPlayer;
             }
 
-            hitUser.Id = nextPlayer.Id;
+            hitUser.CurrentPlayer.Id = nextPlayer.CurrentPlayer.Id;
             userRound = 0;
-            _db.Users.Update(hitUser);
+            _db.Games.Update(hitUser);
         }
 
-        private bool GameEnd(User winner)
+        private bool GameEnd(Game winner)
         {
             if (winner.PlayerState != PlayerState.Lose)
             {
                 winner.PlayerState = PlayerState.Win;
                 //winner.GameState = GameState.End;
-                _db.Users.Update(winner);
+                _db.Games.Update(winner);
+                _db.Users.Update(winner.CurrentPlayer);
                 return true;
             }
             return false;
