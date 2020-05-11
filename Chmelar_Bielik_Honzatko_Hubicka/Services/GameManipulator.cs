@@ -1,8 +1,11 @@
 ﻿using Chmelar_Bielik_Honzatko_Hubicka.Models;
 using Chmelar_Bielik_Honzatko_Hubicka.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Chmelar_Bielik_Honzatko_Hubicka.Services
@@ -10,6 +13,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
     public class GameManipulator : IGameManipulator
     {
         readonly ApplicationDbContext _db;
+        readonly IHttpContextAccessor _httpContext;
 
         public GameManipulator(ApplicationDbContext db)
         {
@@ -47,9 +51,25 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             throw new NotImplementedException();
         }
 
-        public List<Game> JoinGamesList()
+        public string GetUserId()
+        {
+            var result = _httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            return result;
+        }
+
+        public void JoinGame(string Joiner, Guid GameId)
         {
             throw new NotImplementedException();
+        }
+
+        public List<Game> JoinGamesList()
+        {
+            return _db.Games.Where(o => o.Gamestate == GameState.Preparing)
+            .Include(o => o.Owner)
+            .Include(o => o.Player)
+            .Include(o => o.CurrentPlayer)
+            .AsNoTracking().ToList();
         }
 
         public bool Login(User User)
@@ -59,7 +79,12 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
 
         public List<Game> MyGamesList()
         {
-            throw new NotImplementedException();
+            string userId = GetUserId();
+            return _db.Games.Where(o => o.OwnerId == userId)
+            .Include(o => o.Owner)
+            .Include(o => o.Player)
+            .Include(o => o.CurrentPlayer)
+            .AsNoTracking().ToList();
         }
 
         public bool ReadyPlayer(Game Game)
@@ -72,9 +97,19 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             throw new NotImplementedException();
         }
 
-        public bool RemoveGame(Game Game)
+        public bool RemoveGame(Guid Id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var game = _db.Games.SingleOrDefault(g => g.GameId == Id);
+                _db.Games.Remove(game);
+                _db.SaveChanges();
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
 
         public bool StartGame(Game Game)
