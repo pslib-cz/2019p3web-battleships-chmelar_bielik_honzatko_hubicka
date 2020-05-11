@@ -4,6 +4,15 @@
     ViewData["Title"] = "ActiveGames";
 }
 
+@if (Model.MessageSuccess?.Length > 0)
+{
+    <div class="alert alert-success" role="alert">@TempData["MessageSuccess"]<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+}
+@if (Model.MessageError?.Length > 0)
+{
+    <div class="alert alert-warning" role="alert">@TempData["MessageError"]<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+}
+<a asp-page="/Preparation" class="btn btn-success text-right">založit novou hru</a>
 <body>
     <div class="container">
         <main role="main" class="pb-3">
@@ -22,35 +31,62 @@
                         @foreach (var item in Model.MyGameLists)
                         {
                             <tr>
-                                <td>@item.GameState</td>
-                                <td>@item.Player1</td>
-                                <td>@item.Player2</td>
+                                <td>@item.Gamestate</td>
+                                <td>@item.Owner</td>
+                                <td>@item.Player</td>
                                 <th></th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
-                <table class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Stav hry</th>
-                            <th>Hráč 1</th>
-                            <th>Hráč 2</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.JoinGameLists)
+                        <td>
+                            <form method="post" asp-page-handler="JoinGame">
+                                <button class="btn btn-primary">Play</button>
+                                <input type="hidden" name="id" value="@item.GameId" />
+                            </form>
+                        </td>
+                        @if (Model.UserId == item.OwnerId)
                         {
+                            <td>
+                                <form method="post" asp-page-handler="RemoveGame">
+                                    <button class="btn btn-danger">Delete</button>
+                                    <input type="hidden" name="id" value="@item.GameId" />
+                                </form>
+                            </td>
+
+                        }
+                    }
+                        </tbody>
+                    </table>
+
+                    <table class="table table-striped">
+                        <thead>
                             <tr>
-                                <td>@item.GameState</td>
-                                <td>@item.Player1</td>
-                                <td>@item.Player2</td>
+                                <th>Game State</th>
+                                <th>Round</th>
+                                <th>Owner</th>
+                                <th>Current player</th>
                                 <th></th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in Model.OtherGames)
+                            {
+                            <tr>
+                                <td>@item.Gamestate</td>
+                                <td>@item.Owner</td>
+                                <td>@item.Player</td>
+                                <td>
+                                    <form method="post" asp-page-handler="JoinGame">
+                                        <button class="btn btn-primary">Join</button>
+                                        <input type="hidden" name="id" value="@item.GameId" />
+                                    </form>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+
+
+                    </table>
+                </div>
         </main>
     </div>
 </body>
