@@ -132,6 +132,9 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("PlayerState")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("TEXT");
 

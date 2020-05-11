@@ -15,9 +15,11 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
         readonly ApplicationDbContext _db;
         readonly IHttpContextAccessor _httpContext;
 
-        public GameManipulator(ApplicationDbContext db)
+        public GameManipulator(ApplicationDbContext db, IHttpContextAccessor httpContext)
         {
             _db = db;
+            _httpContext = httpContext;
+
         }
 
         public Game AddGame(Game Game)

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chmelar_Bielik_Honzatko_Hubicka.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200407090303_Migrace")]
+    [Migration("20200511112012_Migrace")]
     partial class Migrace
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -132,6 +132,9 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("PlayerState")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("SecurityStamp")

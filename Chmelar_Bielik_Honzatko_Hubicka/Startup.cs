@@ -45,7 +45,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
             services.AddSession();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            services.AddScoped<GameSessionStorage<List<Guid>>>();
+            services.AddScoped<GameSessionStorage<Guid>>();
 
             services.AddScoped<IGameManipulator, GameManipulator>();
             services.AddScoped<IGameLogic, GameLogic>();
