@@ -14,9 +14,11 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
     public class GameonModel : PageModel
     {
         readonly GameLogic _gl;
+        readonly string _gameKey;
         
         public string Color { get; set; } //Color of the cell.
         public List<NavyBattlePiece> Pieces { get; set; }
+        public GameDeskModel GameDesk { get; set; }
 
         public GameonModel(GameLogic gl)
         {
@@ -26,32 +28,33 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
 
         public void OnGet()
         {
-            Pieces = _gl.GetBattlefield("GameKey");
+            Pieces = _gl.GetBattlefield(_gameKey);
+
+            foreach (var p in Pieces)
+            {
+                if (p.State == BattlePieceState.Hitted_Ship)
+                {
+                    Color = "hittedship";
+                }
+
+                else if (p.State == BattlePieceState.Hitted_Water)
+                {
+                    Color = "hittedwater";
+                }
+
+                else
+                {
+                    Color = "unknown";
+                }
+            }
+
+            GameDesk.Pieces = Pieces;
+            GameDesk.Color = Color;
         }
 
-        public void OnPostMessage(string text) //For messages.
+        public void OnPost(string text, int pieceId)
         {
-            /*var piece = _db.NavyBattlePieces.SingleOrDefault(nbp => nbp.GameId == GameId);
-
-            if (piece is null)
-            {
-                text = "No piece in game or not existing game.";
-            }
-
-            if (Piece02.State == BattlePieceState.Hitted_Ship)
-            {
-                text = "You hitted a ship.";
-            }
-
-            else if (Piece02.State == BattlePieceState.Hitted_Water)
-            {
-                text = "You missed. You hitted a water.";
-            }
-
-            else
-            {
-                throw new NotImplementedException();
-            }*/
+            text = _gl.Hit(_gameKey, pieceId);
 
             TempData.AddMessage("messagebox", TempDataExtension.MessageType.success, text);
         }

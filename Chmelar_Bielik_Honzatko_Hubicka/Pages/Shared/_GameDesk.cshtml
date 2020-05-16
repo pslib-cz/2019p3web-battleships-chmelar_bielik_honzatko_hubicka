@@ -1,8 +1,9 @@
-﻿@model List<NavyBattlePiece>
+﻿@model GameDeskModel
 @using Chmelar_Bielik_Honzatko_Hubicka.Models
 
 @{
-    List<NavyBattlePiece> pieces = Model;
+    List<NavyBattlePiece> pieces = Model.Pieces;
+    string color = Model.Color;
 }
 
 <div class="Desk">
@@ -13,8 +14,8 @@
                 <tr>
                     @foreach (var piece in row)
                     {
-                        <td class="game-piece">
-                            <a class="btn btn-outline-light">[@piece.PosX, @piece.PosY]</a>
+                        <td class="game-piece-@color">
+                            <a class="btn btn-outline-light" method="post" asp-route-pieceid="@piece.Id">[@piece.PosX, @piece.PosY]</a>
                         </td>
                     }
                 </tr>
