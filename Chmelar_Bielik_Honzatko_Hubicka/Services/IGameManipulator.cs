@@ -11,15 +11,9 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
         User AddPlayer(User User);
         Game AddGame(Game Game);
         bool RemoveGame(Guid id);
-        bool ReadyPlayer(Game UserGame);
-        bool Turn(User User);
-        bool End(User User);
-        bool StartGame(Game Game);
-        bool Login(User User);
-        bool Register(User User);
+        string StartGame();
         void JoinGame(string Joiner, Guid GameId);
         string GetUserId();
-        List<User> UsersList();
         List<Game> MyGamesList();
         List<Game> JoinGamesList();
 

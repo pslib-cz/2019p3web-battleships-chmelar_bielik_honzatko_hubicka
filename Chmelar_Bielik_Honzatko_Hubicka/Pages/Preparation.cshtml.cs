@@ -14,25 +14,40 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
     public class PreparationModel : PageModel
     {
         readonly GameManipulator _gm;
-        readonly GameSessionStorage<Guid> _gss;
-        readonly ApplicationDbContext _db;
+        private string _gameKey;
+        public string Text { get; set; }
 
-        public NavyBattlePiece Piece { get; set; } //For selecting of piece to hit.
-        public Color Color { get; set; } //Color of the cell.
-
-        public PreparationModel()
+        public PreparationModel(GameManipulator gm)
         {
-            Piece = new NavyBattlePiece();
-            Color = new Color();
+            _gm = gm;
         }
 
-        public void OnPostMessage(string text) //For messages.
+        public void OnPostMessage()
         {
-            TempData.AddMessage("messagebox", TempDataExtension.MessageType.success, text);
+            TempData.AddMessage("messagebox", TempDataExtension.MessageType.success, Text);
         }
         public void OnGet()
         {
-
+            _gameKey = _gm.StartGame();
         }
+
+        public void OnGet(bool generate)
+        {
+            if (generate == true)
+            {
+                _gm.GeneratorPieces(_gameKey);
+                Text = "Your field was generated.";
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public IActionResult OnPost()
+        {
+            return RedirectToPage("./ActiveGames");
+        }
+
     }
 }

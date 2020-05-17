@@ -14,14 +14,37 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
     {
         readonly ApplicationDbContext _db;
         readonly IHttpContextAccessor _httpContext;
+        readonly GameLogic _gl;
+        readonly GameSessionStorage<Guid> _gss;
 
-        public GameManipulator(ApplicationDbContext db, IHttpContextAccessor httpContext)
+        public GameManipulator(ApplicationDbContext db, IHttpContextAccessor httpContext, GameLogic gl, GameSessionStorage<Guid> gss)
         {
             _db = db;
             _httpContext = httpContext;
-
+            _gl = gl;
+            _gss = gss;
         }
 
+        public void GeneratorPieces(string gameKey)
+        {
+            Game game = _gl.GetGame(gameKey);
+            string userId = _gss.GetUserId();
+
+            Game activeUser = _db.Games.SingleOrDefault(u => u.CurrentPlayer.Id == userId && u.CurrentPlayer.Id == game.CurrentPlayer.Id);
+            Random r = new Random();
+            NavyBattlePiece piece = new NavyBattlePiece();
+            for (int i = 0; i < 20; i++)
+            {
+                piece.Id = i;
+                piece.GameId = game.GameId;
+                piece.UserId = activeUser.CurrentPlayer.Id;
+                piece.PosX = r.Next(0, 10);
+                piece.PosY = r.Next(0, 10);
+                _db.NavyBattlePieces.Add(piece);
+                _db.SaveChanges();
+            }
+
+        }
         public Game AddGame(Game Game)
         {
             var game = _db.Games.SingleOrDefault(g => g.GameId == Game.GameId);
@@ -43,15 +66,6 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
 
             throw new KeyNotFoundException("Player:" + User + "already exists.");
         }
-        public bool End(User User)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Game> GamesList()
-        {
-            throw new NotImplementedException();
-        }
 
         public string GetUserId()
         {
@@ -62,7 +76,9 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
 
         public void JoinGame(string Joiner, Guid GameId)
         {
-            throw new NotImplementedException();
+            Game game = _gl.GetGame(GameId);
+            game.Player.Id = Joiner;
+            _db.Update(game);
         }
 
         public List<Game> JoinGamesList()
@@ -74,11 +90,6 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             .AsNoTracking().ToList();
         }
 
-        public bool Login(User User)
-        {
-            throw new NotImplementedException();
-        }
-
         public List<Game> MyGamesList()
         {
             string userId = GetUserId();
@@ -87,16 +98,6 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             .Include(o => o.Player)
             .Include(o => o.CurrentPlayer)
             .AsNoTracking().ToList();
-        }
-
-        public bool ReadyPlayer(Game Game)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Register(User User)
-        {
-            throw new NotImplementedException();
         }
 
         public bool RemoveGame(Guid Id)
@@ -114,19 +115,17 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             return true;
         }
 
-        public bool StartGame(Game Game)
+        public string StartGame()
         {
-            throw new NotImplementedException();
-        }
+            string userId = _gss.GetUserId();
 
-        public bool Turn(User User)
-        {
-            throw new NotImplementedException();
-        }
+            Game activeUser = _db.Games.SingleOrDefault(u => u.CurrentPlayer.Id == userId);
+            Game game = new Game();
+            game.Owner = activeUser.CurrentPlayer;
+            _db.Games.Add(game);
+            _db.SaveChanges();
 
-        public List<User> UsersList()
-        {
-            throw new NotImplementedException();
+            return game.GameId.ToString();
         }
     }
 }

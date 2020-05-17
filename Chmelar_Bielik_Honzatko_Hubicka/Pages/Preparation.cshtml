@@ -6,20 +6,5 @@
 
 <h1>Preparation</h1>
 
-<h3>Vyber si postavení svých lodí.</h3>
-
-<div class="Desk">
-<table class="table">
-    <tbody>
-        @for (var i = 0; i < 10; i++)
-        {
-            <tr>
-                @for (var k = 0; k < 10; k++)
-                {
-                    <td class="game-piece">@i  @k</td>
-                }
-            </tr>
-        }
-    </tbody>
-</table>
-</div>
+<a class ="btn btn-primary" asp-route-generate="@true">Generate battlefield</a>
+<a class="btn btn-primary" method ="post">To active game</a>
