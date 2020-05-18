@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 
 namespace Chmelar_Bielik_Honzatko_Hubicka.Services
@@ -11,11 +12,19 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
     {
         readonly ApplicationDbContext _db;
         readonly GameSessionStorage<Guid> _gss;
-
+        public Guid activeGameId { get; private set; }
+        public string activeUserId { get; set; }
         public GameLogic(ApplicationDbContext db, GameSessionStorage<Guid> gss)
         {
             _db = db;
             _gss = gss;
+            activeGameId = _gss.LoadGame("GameKey");
+            activeUserId = _gss.GetUserId();
+        }
+
+        public bool InGame() 
+        {
+            return activeGameId != default;
         }
 
         public List<NavyBattlePiece> GetBattlePieces(Guid GameId)
@@ -30,11 +39,11 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             return _db.Games.SingleOrDefault(g => g.GameId == GameId);
         }
 
-        public Game GetGame(string gameKey)
-        {
-            Guid gameId = _gss.LoadGame(gameKey);
-            return _db.Games.SingleOrDefault(g => g.GameId == gameId);
-        }
+        //public Game GetGame(string gameKey)
+        //{
+        //    Guid gameId = _gss.LoadGame(gameKey);
+        //    return _db.Games.SingleOrDefault(g => g.GameId == gameId);
+        //}
 
         public List<NavyBattlePiece> GetBattlefield(string gameKey) 
         {
@@ -44,13 +53,12 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             return battlefield;
         }
 
-        public string Hit(string gameKey, int pieceId)
+        public string Hit(int pieceId)
         {
             string result = "Something went wrong. Try it again.";
             var piece = _db.NavyBattlePieces.SingleOrDefault(p => p.Id == pieceId);
 
-            Game activeGame = GetGame(gameKey);
-            string activeUserId = _gss.GetUserId();
+            Game activeGame = GetGame(activeGameId);
 
             Game activeUser = _db.Games.SingleOrDefault(u => u.CurrentPlayer.Id == activeGame.CurrentPlayer.Id);
             Game hitUser = _db.Games.SingleOrDefault(u => u.CurrentPlayer.Id == activeUserId);

@@ -23,11 +23,19 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             _httpContext = httpContext;
             _gl = gl;
             _gss = gss;
+            activeGameId = _gss.LoadGame("GameKey");
         }
 
-        public void GeneratorPieces(string gameKey)
+        public Guid activeGameId { get; private set; }
+
+        public bool InGame()
         {
-            Game game = _gl.GetGame(gameKey);
+            return activeGameId != default;
+        }
+
+        public void GeneratorPieces()
+        {
+            Game game = _gl.GetGame(activeGameId);
             string userId = _gss.GetUserId();
 
             Game activeUser = _db.Games.SingleOrDefault(u => u.CurrentPlayer.Id == userId && u.CurrentPlayer.Id == game.CurrentPlayer.Id);
@@ -115,17 +123,18 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             return true;
         }
 
-        public string StartGame()
+        public void StartGame()
         {
             string userId = _gss.GetUserId();
 
             Game activeUser = _db.Games.SingleOrDefault(u => u.CurrentPlayer.Id == userId);
             Game game = new Game();
+            game.GameId = Guid.NewGuid();
+            activeGameId = game.GameId;
+            _gss.SaveGame("GameKey", activeGameId);
             game.Owner = activeUser.CurrentPlayer;
             _db.Games.Add(game);
             _db.SaveChanges();
-
-            return game.GameId.ToString();
         }
     }
 }
