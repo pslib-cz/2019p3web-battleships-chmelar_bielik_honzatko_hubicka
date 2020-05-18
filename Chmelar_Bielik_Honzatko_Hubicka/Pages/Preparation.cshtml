@@ -7,4 +7,5 @@
 <h1>Preparation</h1>
 
 <a class ="btn btn-primary" asp-route-generate="@true">Generate battlefield</a>
-<a class="btn btn-primary" method ="post">To active game</a>
+<a class="btn btn-primary" method ="post" asp-page-handler="Active">To active game</a>
+<a class="btn btn-primary" method="post" asp-page-handler="Game" asp-action="btnRedirect">To game</a>

@@ -63,5 +63,10 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Pages
             _gameManipulator.JoinGame("Game", id);
             return RedirectToPage("/Preparation");
         }
+
+        protected void btnRedirect(object sender, EventArgs e)
+        { 
+            Response.Redirect($"Gameon.cshtml.cs?val={ gameId.ToString() }");
+        }
     }
 }

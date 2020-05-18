@@ -44,10 +44,19 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
             }
         }
 
-        public IActionResult OnPost()
+        public IActionResult OnPostActive()
         {
             return RedirectToPage("./ActiveGames");
         }
 
+        public IActionResult OnPostGame()
+        {
+            return RedirectToPage("./Gameon");
+        }
+
+        protected void btnRedirect(object sender, EventArgs e)
+        {
+            Response.Redirect($"Gameon.cshtml.cs?val={ _gameKey }");
+        }
     }
 }

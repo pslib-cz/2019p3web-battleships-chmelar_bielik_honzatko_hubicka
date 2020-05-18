@@ -52,9 +52,9 @@
                             </td>
 
                         }
-                    }
-                        </tbody>
-                    </table>
+                        }
+                    </tbody>
+                </table>
 
                     <table class="table table-striped">
                         <thead>
@@ -75,7 +75,7 @@
                                 <td>@item.Owner</td>
                                 <td>@item.Player</td>
                                 <td>
-                                    <form method="post" asp-page-handler="JoinGame">
+                                    <form method="post" asp-page-handler="JoinGame" asp-action="btnRedirect">
                                         <button class="btn btn-primary">Join</button>
                                         <input type="hidden" name="id" value="@item.GameId" />
                                     </form>

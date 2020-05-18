@@ -14,7 +14,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
     public class GameonModel : PageModel
     {
         readonly GameLogic _gl;
-        readonly string _gameKey;
+        private string _gameKey;
         
         public string Color { get; set; } //Color of the cell.
         public List<NavyBattlePiece> Pieces { get; set; }
@@ -28,6 +28,9 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
 
         public void OnGet()
         {
+            if (Request.QueryString["val"] != null)
+                _gameKey = Request.QueryString["val"];
+
             Pieces = _gl.GetBattlefield(_gameKey);
 
             foreach (var p in Pieces)
