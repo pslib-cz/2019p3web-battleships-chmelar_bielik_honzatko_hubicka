@@ -21,14 +21,15 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Pages
         public string MessageError { get; set; }
 
 
-        IGameManipulator _gameManipulator;
-        public ActiveGamesModel(IGameManipulator gameManipulator)
+        readonly GameManipulator _gameManipulator;
+        public ActiveGamesModel(GameManipulator gameManipulator, GameSessionStorage<Guid> gss)
         {
             _gameManipulator = gameManipulator;
             MyGameLists = new List<Game>();
             JoinGameLists = new List<Game>();
+            _gss = gss;
         }
-        public Guid gameId { get; set; }
+        readonly GameSessionStorage<Guid> _gss;
         public List<Game> MyGames { get; set; }
         public List<Game> OtherGames { get; set; }
         public string UserId { get; set; }
@@ -40,7 +41,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Pages
             MyGames = _gameManipulator.MyGamesList();
             OtherGames = new List<Game>();
             OtherGames = _gameManipulator.JoinGamesList();
-            UserId = _gameManipulator.GetUserId();
+            UserId = _gss.GetUserId();
         }
 
         public IActionResult OnPostRemoveGame(Guid id)
@@ -61,12 +62,8 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Pages
         public IActionResult OnPostJoinGame(Guid id)
         {
             _gameManipulator.JoinGame("Game", id);
-            return RedirectToPage("/Preparation");
+            return RedirectToPage("./Gameon");
         }
 
-        protected void btnRedirect(object sender, EventArgs e)
-        { 
-            Response.Redirect($"Gameon.cshtml.cs?val={ gameId.ToString() }");
-        }
     }
 }

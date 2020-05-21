@@ -16,17 +16,21 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
         readonly IHttpContextAccessor _httpContext;
         readonly GameLogic _gl;
         readonly GameSessionStorage<Guid> _gss;
+        readonly Random _rnd;
 
-        public GameManipulator(ApplicationDbContext db, IHttpContextAccessor httpContext, GameLogic gl, GameSessionStorage<Guid> gss)
+        public GameManipulator(ApplicationDbContext db, IHttpContextAccessor httpContext, GameLogic gl, GameSessionStorage<Guid> gss, Random rnd)
         {
             _db = db;
             _httpContext = httpContext;
             _gl = gl;
             _gss = gss;
             activeGameId = _gss.LoadGame("GameKey");
+            activeUserId = _gss.GetUserId();
+            _rnd = rnd;
         }
 
         public Guid activeGameId { get; private set; }
+        public string activeUserId { get; private set; }
 
         public bool InGame()
         {
@@ -36,21 +40,26 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
         public void GeneratorPieces()
         {
             Game game = _gl.GetGame(activeGameId);
-            string userId = _gss.GetUserId();
-
-            Game activeUser = _db.Games.SingleOrDefault(u => u.CurrentPlayer.Id == userId && u.CurrentPlayer.Id == game.CurrentPlayer.Id);
-            Random r = new Random();
             NavyBattlePiece piece = new NavyBattlePiece();
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 100; i++)
             {
-                piece.Id = i;
+                piece.Id = piece.Id + i;
+                for (int q = 0; q < 20; q++)
+                {
+                    piece.Id = piece.Id - q;
+                    piece.State = BattlePieceState.Ship;
+                    piece.PosX = _rnd.Next(0, 10);
+                    piece.PosY = _rnd.Next(0, 10);
+                }
+                piece.State = BattlePieceState.Water;
                 piece.GameId = game.GameId;
-                piece.UserId = activeUser.CurrentPlayer.Id;
-                piece.PosX = r.Next(0, 10);
-                piece.PosY = r.Next(0, 10);
+                piece.UserId = game.CurrentPlayerId;
+                piece.PosX = _rnd.Next(0, 10);
+                piece.PosY = _rnd.Next(0, 10);
+                game.GamePieces.Add(piece);
                 _db.NavyBattlePieces.Add(piece);
-                _db.SaveChanges();
             }
+            _db.SaveChanges();
 
         }
         public Game AddGame(Game Game)
@@ -75,17 +84,11 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             throw new KeyNotFoundException("Player:" + User + "already exists.");
         }
 
-        public string GetUserId()
-        {
-            var result = _httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            return result;
-        }
-
         public void JoinGame(string Joiner, Guid GameId)
         {
             Game game = _gl.GetGame(GameId);
-            game.Player.Id = Joiner;
+            game.PlayerId = Joiner;
+            GeneratorPieces();
             _db.Update(game);
         }
 
@@ -100,8 +103,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
 
         public List<Game> MyGamesList()
         {
-            string userId = GetUserId();
-            return _db.Games.Where(o => o.OwnerId == userId)
+            return _db.Games.Where(o => o.OwnerId == activeUserId)
             .Include(o => o.Owner)
             .Include(o => o.Player)
             .Include(o => o.CurrentPlayer)
@@ -125,9 +127,8 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
 
         public void StartGame()
         {
-            string userId = _gss.GetUserId();
 
-            Game activeUser = _db.Games.SingleOrDefault(u => u.CurrentPlayer.Id == userId);
+            Game activeUser = _db.Games.SingleOrDefault(u => u.CurrentPlayerId == activeUserId);
             Game game = new Game();
             game.GameId = Guid.NewGuid();
             activeGameId = game.GameId;

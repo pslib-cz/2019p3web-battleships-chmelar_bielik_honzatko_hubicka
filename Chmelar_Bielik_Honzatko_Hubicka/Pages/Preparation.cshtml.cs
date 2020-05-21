@@ -14,7 +14,6 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
     public class PreparationModel : PageModel
     {
         readonly GameManipulator _gm;
-        private string _gameKey;
         public string Text { get; set; }
 
         public PreparationModel(GameManipulator gm)
@@ -28,14 +27,14 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
         }
         public void OnGet()
         {
-            _gameKey = _gm.StartGame();
+
         }
 
-        public void OnGet(bool generate)
+        public void OnGetGenerate(bool generate)
         {
             if (generate == true)
             {
-                _gm.GeneratorPieces(_gameKey);
+                _gm.GeneratorPieces();
                 Text = "Your field was generated.";
             }
             else
@@ -44,19 +43,14 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
             }
         }
 
+        public void OnGetGame()
+        {
+            _gm.StartGame();
+        }
+
         public IActionResult OnPostActive()
         {
             return RedirectToPage("./ActiveGames");
-        }
-
-        public IActionResult OnPostGame()
-        {
-            return RedirectToPage("./Gameon");
-        }
-
-        protected void btnRedirect(object sender, EventArgs e)
-        {
-            Response.Redirect($"Gameon.cshtml.cs?val={ _gameKey }");
         }
     }
 }

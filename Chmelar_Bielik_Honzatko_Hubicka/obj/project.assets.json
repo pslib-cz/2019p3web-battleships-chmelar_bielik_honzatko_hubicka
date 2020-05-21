@@ -7875,7 +7875,7 @@
       ]
     },
     "System.ValueTuple/4.4.0": {
-      "sha512": "BahUww/+mdP4ARCAh2RQhQTg13wYLVrBb9SYVgW8ZlrwjraGCXHGjo0oIiUfZ34LUZkMMR+RAzR7dEY4S1HeQQ==",
+      "sha512": "hBl0/yPqtMnwrsqCYSxYr4Abvo9hSVYmf+55EniEMyCEPJRM1VGr8o+kHeHJdEqgr6wrQMhZ7HowYmejruXStg==",
       "type": "package",
       "path": "system.valuetuple/4.4.0",
       "files": [
@@ -8094,23 +8094,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\marti\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
+    "C:\\Users\\Tomáš\\.nuget\\packages\\": {},
+    "C:\\Microsoft\\Xamarin\\NuGet\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\marti\\source\\repos\\pslib-cz\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka\\Chmelar_Bielik_Honzatko_Hubicka\\Chmelar_Bielik_Honzatko_Hubicka.csproj",
+      "projectUniqueName": "C:\\Users\\Tomáš\\Source\\Repos\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka12\\Chmelar_Bielik_Honzatko_Hubicka\\Chmelar_Bielik_Honzatko_Hubicka.csproj",
       "projectName": "Chmelar_Bielik_Honzatko_Hubicka",
-      "projectPath": "C:\\Users\\marti\\source\\repos\\pslib-cz\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka\\Chmelar_Bielik_Honzatko_Hubicka\\Chmelar_Bielik_Honzatko_Hubicka.csproj",
-      "packagesPath": "C:\\Users\\marti\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\marti\\source\\repos\\pslib-cz\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka\\Chmelar_Bielik_Honzatko_Hubicka\\obj\\",
+      "projectPath": "C:\\Users\\Tomáš\\Source\\Repos\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka12\\Chmelar_Bielik_Honzatko_Hubicka\\Chmelar_Bielik_Honzatko_Hubicka.csproj",
+      "packagesPath": "C:\\Users\\Tomáš\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Tomáš\\Source\\Repos\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka12\\Chmelar_Bielik_Honzatko_Hubicka\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\"
+        "C:\\Microsoft\\Xamarin\\NuGet\\",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\marti\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Tomáš\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
@@ -8198,7 +8200,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
       }
     }
   }
