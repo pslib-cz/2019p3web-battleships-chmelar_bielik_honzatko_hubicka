@@ -9,9 +9,8 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
     interface IGameLogic
     {
         Game GetGame(Guid GameId);
-        Game GetGame(string gameKey);
         List<NavyBattlePiece> GetBattlePieces(Guid GameId);
-        List<NavyBattlePiece> GetBattlefield(string gameKey);
-        public string Hit(string gameKey, int pieceId);
+        List<NavyBattlePiece> GetBattlefield();
+        public void Hit(int pieceId);
     }
 }

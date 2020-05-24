@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 
 namespace Chmelar_Bielik_Honzatko_Hubicka.Services
 {
-    public class GameLogic : IGameLogic //Almost complete Game logic => just small changes needed.
+    public class GameLogic : IGameLogic
     {
         readonly ApplicationDbContext _db;
         readonly GameSessionStorage<Guid> _gss;
         public Guid activeGameId { get; private set; }
         public string activeUserId { get; set; }
+        private BattlePieceState state { get; set; }
         public GameLogic(ApplicationDbContext db, GameSessionStorage<Guid> gss)
         {
             _db = db;
@@ -39,94 +40,66 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             return _db.Games.SingleOrDefault(g => g.GameId == GameId);
         }
 
-        //public Game GetGame(string gameKey)
-        //{
-        //    Guid gameId = _gss.LoadGame(gameKey);
-        //    return _db.Games.SingleOrDefault(g => g.GameId == gameId);
-        //}
-
-        public List<NavyBattlePiece> GetBattlefield(string gameKey) 
+        public List<NavyBattlePiece> GetBattlefield() 
         {
-            Guid gameId = _gss.LoadGame(gameKey);
-            var battlefield = GetBattlePieces(gameId);
+            var battlefield = GetBattlePieces(activeGameId);
 
             return battlefield;
         }
 
-        public string Hit(int pieceId)
+        public void Hit(int pieceId)
         {
-            string result = "Something went wrong. Try it again.";
             var piece = _db.NavyBattlePieces.SingleOrDefault(p => p.Id == pieceId);
+            
 
             Game activeGame = GetGame(activeGameId);
 
-            Game activeUser = _db.Games.SingleOrDefault(u => u.CurrentPlayer.Id == activeGame.CurrentPlayer.Id);
             Game hitUser = _db.Games.SingleOrDefault(u => u.CurrentPlayer.Id == activeUserId);
+            User hittedUser = _db.Users.Where(u => u.Id == activeUserId).Where(u => u.Id == piece.UserId).FirstOrDefault();
+
+            List<NavyBattlePiece> UnhittedPieces = _db.NavyBattlePieces.Where(p => p.UserId == piece.UserId && p.State == BattlePieceState.Ship).Take(2).AsNoTracking().ToList();
 
             if (activeGame.Gamestate == GameState.End)
             {
-                return "This game already ended, so you can't play.";
+                return;   
             }
 
-            if (hitUser.CurrentPlayerId != activeUser.CurrentPlayer.Id)
+            else if (InGame())
             {
-                return "It is not your turn.";
-            }
-
-            if (piece.UserId == hitUser.CurrentPlayer.Id)
-            {
-                return "You can't hit your own piece!";
-            }
-
-            if (piece.State == BattlePieceState.Hitted_Ship || piece.State == BattlePieceState.Hitted_Water)
-            {
-                return "You have already hitted that piece.";
-            }
-
-            BattlePieceState state;
-
-            if (piece.State == BattlePieceState.Ship)
-            {
-                state = BattlePieceState.Hitted_Ship;
-                result = "You have distroyed a ship of your enemy.";
-            }
-
-            else if (piece.State == BattlePieceState.Water)
-            {
-                state = BattlePieceState.Hitted_Water;
-                result = "You hitted a water.";
-            }
-
-            else
-            {
-                state = BattlePieceState.Unknown;
-            }
-            piece.State = state;
-            _db.NavyBattlePieces.Update(piece);
-
-            if (state == BattlePieceState.Hitted_Ship)
-            {
-                User hittedUser = _db.Users.Where(u => u.Id == activeUserId).Where(u => u.Id == piece.UserId).FirstOrDefault();
-
-                List<NavyBattlePiece> UnhittedPieces = _db.NavyBattlePieces.Where(p => p.UserId == piece.UserId && p.State == BattlePieceState.Ship).Take(2).AsNoTracking().ToList();
-
-                if (UnhittedPieces.Count() < 2)
+                if (hitUser.CurrentPlayerId == hittedUser.Id)
                 {
-                    result = $"You have destroyed the last piece in {hittedUser.UserName}s fleet.";
+                    return;
+                }
 
-                    hittedUser.PlayerState = PlayerState.Lose;
-                    _db.Users.Update(hittedUser);
-                    _db.SaveChanges();
+                else if (piece.State == BattlePieceState.Hitted_Ship || piece.State == BattlePieceState.Hitted_Water)
+                {
+                    return;
+                }
 
-                    if (GameEnd(hitUser))
+                else if (piece.State == BattlePieceState.Ship)
+                {
+                    state = BattlePieceState.Hitted_Ship;
+                    if (UnhittedPieces.Count() < 2)
                     {
-                        result = "Congrats, you have won!";
+                        hittedUser.PlayerState = PlayerState.Lose;
+                        _db.Users.Update(hittedUser);
+                        _db.SaveChanges();
                     }
+                }
 
-                    else
-                    {
-                        ContinueInGame(hitUser);
-                    }
+                else if (GameEnd(hitUser))
+                {
+                    return;
+                }
+
+                else if (piece.State == BattlePieceState.Water)
+                {
+                    state = BattlePieceState.Hitted_Water;
+                }
+
+                else if (piece.State != BattlePieceState.Water && piece.State != BattlePieceState.Ship)
+                {
+                    state = BattlePieceState.Unknown;
                 }
 
                 else
@@ -137,11 +110,11 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
 
             else
             {
-                ContinueInGame(hitUser);
+                return;
             }
-
+            piece.State = state;
+            _db.NavyBattlePieces.Update(piece);
             _db.SaveChanges();
-            return result;
         }
 
         private void ContinueInGame(Game hitUser)
@@ -149,9 +122,9 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             int userRound = 0;
 
             userRound++;
-            List<Game> listUsers = _db.Games.Where(u => u.GameId == hitUser.GameId).OrderBy(u => u.CurrentPlayer.Id).ToList();
+            List<Game> listUsers = _db.Games.Where(u => u.GameId == hitUser.GameId).OrderBy(u => u.CurrentPlayerId).ToList();
             Game nextPlayer = new Game();
-            int index = listUsers.FindIndex(u => u.CurrentPlayer.Id == hitUser.CurrentPlayer.Id);
+            int index = listUsers.FindIndex(u => u.CurrentPlayerId == hitUser.CurrentPlayerId);
 
             if (userRound == 1)
             {
@@ -164,7 +137,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
                 nextPlayer.CurrentPlayer = listUsers[0].CurrentPlayer;
             }
 
-            hitUser.CurrentPlayer.Id = nextPlayer.CurrentPlayer.Id;
+            hitUser.CurrentPlayerId = nextPlayer.CurrentPlayerId;
             userRound = 0;
             _db.Games.Update(hitUser);
         }
@@ -174,7 +147,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             if (winner.PlayerState != PlayerState.Lose)
             {
                 winner.PlayerState = PlayerState.Win;
-                //winner.GameState = GameState.End;
+                winner.Gamestate = GameState.End;
                 _db.Games.Update(winner);
                 _db.Users.Update(winner.CurrentPlayer);
                 return true;

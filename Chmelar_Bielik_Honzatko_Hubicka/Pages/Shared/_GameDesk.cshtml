@@ -15,7 +15,7 @@
                     @foreach (var piece in row)
                     {
                         <td class="game-piece-@color">
-                            <a class="btn btn-outline-light" method="post" asp-route-pieceid="@piece.Id">[@piece.PosX, @piece.PosY]</a>
+                            <a class="btn btn-outline-light" asp-page-handler="Hit" asp-route-pieceid="@piece.Id">[@piece.PosX, @piece.PosY]</a>
                         </td>
                     }
                 </tr>
