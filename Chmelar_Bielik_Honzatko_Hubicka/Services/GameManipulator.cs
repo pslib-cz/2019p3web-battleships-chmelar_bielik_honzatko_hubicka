@@ -127,13 +127,12 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
 
         public void StartGame()
         {
-
-            Game activeUser = _db.Games.SingleOrDefault(u => u.CurrentPlayerId == activeUserId);
             Game game = new Game();
             game.GameId = Guid.NewGuid();
             activeGameId = game.GameId;
             _gss.SaveGame("GameKey", activeGameId);
-            game.Owner = activeUser.CurrentPlayer;
+            game.OwnerId = activeUserId;
+            GeneratorPieces();
             _db.Games.Add(game);
             _db.SaveChanges();
         }

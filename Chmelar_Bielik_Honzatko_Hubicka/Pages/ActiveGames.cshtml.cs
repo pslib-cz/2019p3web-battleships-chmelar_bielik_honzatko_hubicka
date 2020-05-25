@@ -49,12 +49,12 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Pages
             bool result = _gameManipulator.RemoveGame(id);
             if (result)
             {
-                MessageSuccess = "Hra byla smazána";
+                MessageSuccess = "Game was removed.";
             }
 
             else
             {
-                MessageError = "Hru se nepovedlo smazat";
+                MessageError = "Game was unable to be removed.";
             }
             return RedirectToPage("/ActiveGames");
         }

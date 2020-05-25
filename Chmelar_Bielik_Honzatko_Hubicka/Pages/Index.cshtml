@@ -10,16 +10,16 @@
 
 <body>
     <div class="container">
-        <h1 class="display-4">Vítejte ve hře lodě!</h1>
+        <h1 class="display-4">Welcome to game Battleships!</h1>
         @if (SignInManager.IsSignedIn(User))
         {
-            <a class="btn btn-info" href="/Preparation">vytvořit novou hru</a>
-            <a class="btn btn-info" href="/ActiveGames">připojit se ke hře</a>
+            <a class="btn btn-info" href="./Preparation">Create a new game</a>
+            <a class="btn btn-info" href="./ActiveGames">Join Game</a>
         }
         else
         {
-            <a class="btn btn-info" href="../Identity/Account/Login">Přihlášení</a>
-            <a class="btn btn-info" href="../Identity/Account/Register">Registrovat</a>
+            <a class="btn btn-info" href="../Identity/Account/Login">Log in</a>
+            <a class="btn btn-info" href="../Identity/Account/Register">Register</a>
         }
     </div>
     <footer class="border-top footer text-muted">

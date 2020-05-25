@@ -47,10 +47,5 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
         {
             _gm.StartGame();
         }
-
-        public IActionResult OnPostActive()
-        {
-            return RedirectToPage("./ActiveGames");
-        }
     }
 }
