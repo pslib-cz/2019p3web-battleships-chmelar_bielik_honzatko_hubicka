@@ -30,22 +30,11 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
 
         }
 
-        public void OnGetGenerate(bool generate)
-        {
-            if (generate == true)
-            {
-                _gm.GeneratorPieces();
-                Text = "Your field was generated.";
-            }
-            else
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public void OnGetGame()
+        public IActionResult OnGetGame()
         {
             _gm.StartGame();
+
+            return RedirectToPage("./Gameon");
         }
     }
 }
