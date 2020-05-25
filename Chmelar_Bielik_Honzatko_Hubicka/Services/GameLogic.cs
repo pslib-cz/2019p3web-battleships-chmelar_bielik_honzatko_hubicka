@@ -59,7 +59,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
 
             List<NavyBattlePiece> UnhittedPieces = _db.NavyBattlePieces.Where(p => p.UserId == piece.UserId && p.State == BattlePieceState.Ship).Take(2).AsNoTracking().ToList();
 
-            if (activeGame.Gamestate == GameState.End)
+            if (activeGame.Gamestate == GameState.End || (activeGame.OwnerState != PlayerState.PreperingForGame || activeGame.PlayerState != PlayerState.PreperingForGame))
             {
                 return;   
             }

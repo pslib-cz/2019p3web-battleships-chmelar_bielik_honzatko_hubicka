@@ -88,6 +88,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
         {
             Game game = _gl.GetGame(GameId);
             game.PlayerId = Joiner;
+            game.PlayerState = PlayerState.PreperingForGame;
             GeneratorPieces();
             _gss.SaveGame("GameKey", activeGameId);
             _db.Update(game);
@@ -134,6 +135,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             _gss.SaveGame("GameKey", activeGameId);
             game.Gamestate = GameState.Preparing;
             game.OwnerId = activeUserId;
+            game.OwnerState = PlayerState.PreperingForGame;
             GeneratorPieces();
             _db.Games.Add(game);
             _db.SaveChanges();
