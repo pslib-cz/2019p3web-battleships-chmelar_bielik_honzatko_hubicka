@@ -66,6 +66,8 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
 
             else if (InGame())
             {
+                hitUser.Gamestate = GameState.Fighting;
+
                 if (hitUser.CurrentPlayerId == hittedUser.Id)
                 {
                     return;
@@ -115,6 +117,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             piece.State = state;
             _db.NavyBattlePieces.Update(piece);
             _db.SaveChanges();
+            _gss.SaveGame("GameKey", activeGameId);
         }
 
         private void ContinueInGame(Game hitUser)
