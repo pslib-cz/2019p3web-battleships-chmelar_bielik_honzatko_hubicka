@@ -8,12 +8,9 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
 {
     public interface IGameManipulator
     {
-        User AddPlayer(User User);
-        Game AddGame(Game Game);
         bool RemoveGame(Guid id);
-        void JoinGame(string Joiner, Guid GameId);
+        void JoinGame(Guid GameId);
         List<Game> MyGamesList();
         List<Game> JoinGamesList();
-
     }
 }

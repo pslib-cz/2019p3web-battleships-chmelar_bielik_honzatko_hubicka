@@ -13,15 +13,13 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
     public class GameManipulator : IGameManipulator
     {
         readonly ApplicationDbContext _db;
-        readonly IHttpContextAccessor _httpContext;
         readonly GameLogic _gl;
         readonly GameSessionStorage<Guid> _gss;
         readonly Random _rnd;
 
-        public GameManipulator(ApplicationDbContext db, IHttpContextAccessor httpContext, GameLogic gl, GameSessionStorage<Guid> gss, Random rnd)
+        public GameManipulator(ApplicationDbContext db, GameLogic gl, GameSessionStorage<Guid> gss, Random rnd)
         {
             _db = db;
-            _httpContext = httpContext;
             _gl = gl;
             _gss = gss;
             activeGameId = _gss.LoadGame("GameKey");
@@ -43,53 +41,30 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             NavyBattlePiece piece = new NavyBattlePiece();
             for (int i = 0; i < 100; i++)
             {
-                piece.Id = piece.Id + i;
-                for (int q = 0; q < 20; q++)
-                {
-                    piece.Id = piece.Id - q;
-                    piece.State = BattlePieceState.Ship;
-                    piece.PosX = _rnd.Next(0, 10);
-                    piece.PosY = _rnd.Next(0, 10);
-                }
                 piece.State = BattlePieceState.Water;
-                piece.GameId = game.GameId;
-                piece.UserId = game.CurrentPlayerId;
-                piece.PosX = _rnd.Next(0, 10);
-                piece.PosY = _rnd.Next(0, 10);
+                piece.GameId = activeGameId;
+                piece.UserId = activeUserId;
+                piece.PosX = i % 10;
+                piece.PosY = i / 10;
                 game.GamePieces.Add(piece);
                 _db.NavyBattlePieces.Add(piece);
             }
             _db.SaveChanges();
-
-        }
-        public Game AddGame(Game Game)
-        {
-            var game = _db.Games.SingleOrDefault(g => g.GameId == Game.GameId);
-            if (game is null)
+            var shipPieces = _db.NavyBattlePieces.Where(sP => sP.PosX == _rnd.Next(1, 10) && sP.PosY == _rnd.Next(1, 10) && sP.GameId == activeGameId);
+            foreach (var shipPiece in shipPieces)
             {
-                return new Game() { GameId = Game.GameId, OwnerId = Game.OwnerId, PlayerId = Game.PlayerId, CurrentPlayerId = Game.CurrentPlayerId };
+                shipPiece.State = BattlePieceState.Ship;
             }
-
-            throw new KeyNotFoundException("Game:" + Game + "already exists.");
+            _db.SaveChanges();
         }
 
-        public User AddPlayer(User User)
-        {
-            var player = _db.Users.SingleOrDefault(u => u.UserName == User.UserName);
-            if (player is null)
-            {
-                return new User(); //{ Id = User.Id, UserName = User.UserName, Password = User.Password };
-            }
-
-            throw new KeyNotFoundException("Player:" + User + "already exists.");
-        }
-
-        public void JoinGame(string Joiner, Guid GameId)
+        public void JoinGame(Guid GameId)
         {
             Game game = _gl.GetGame(GameId);
-            game.PlayerId = Joiner;
+            game.PlayerId = activeUserId;
             game.PlayerState = PlayerState.PreperingForGame;
             GeneratorPieces();
+            activeGameId = game.GameId;
             _gss.SaveGame("GameKey", activeGameId);
             _db.Update(game);
         }

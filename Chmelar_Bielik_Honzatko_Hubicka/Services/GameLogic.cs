@@ -35,9 +35,9 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             return _db.NavyBattlePieces.Where(p => p.GameId == game.GameId).OrderBy(p => p.PosX).OrderBy(p => p.PosY).ToList();
         }
 
-        public Game GetGame(Guid GameId)
+        public Game GetGame(Guid gameId)
         {
-            return _db.Games.SingleOrDefault(g => g.GameId == GameId);
+            return _db.Games.Where(g => g.GameId == gameId).SingleOrDefault();
         }
 
         public List<NavyBattlePiece> GetBattlefield() 
@@ -55,9 +55,9 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             Game activeGame = GetGame(activeGameId);
 
             Game hitUser = _db.Games.SingleOrDefault(u => u.CurrentPlayer.Id == activeUserId);
-            User hittedUser = _db.Users.Where(u => u.Id == activeUserId).Where(u => u.Id == piece.UserId).FirstOrDefault();
+            User hittedUser = _db.Users.Where(u => u.Id == piece.UserId).FirstOrDefault();
 
-            List<NavyBattlePiece> UnhittedPieces = _db.NavyBattlePieces.Where(p => p.UserId == piece.UserId && p.State == BattlePieceState.Ship).Take(2).AsNoTracking().ToList();
+            List<NavyBattlePiece> UnhittedPieces = _db.NavyBattlePieces.Where(p => p.UserId == piece.UserId && p.State == BattlePieceState.Ship).ToList();
 
             if (activeGame.Gamestate == GameState.End || (activeGame.OwnerState != PlayerState.PreperingForGame || activeGame.PlayerState != PlayerState.PreperingForGame))
             {

@@ -61,7 +61,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Pages
 
         public IActionResult OnPostJoinGame(Guid id)
         {
-            _gameManipulator.JoinGame(UserId, id);
+            _gameManipulator.JoinGame(id);
             return RedirectToPage("./Gameon");
         }
 
