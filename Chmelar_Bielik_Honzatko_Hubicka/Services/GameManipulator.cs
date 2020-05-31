@@ -50,6 +50,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
                 _db.NavyBattlePieces.Add(piece);
             }
             _db.SaveChanges();
+
             var shipPieces = _db.NavyBattlePieces.Where(sP => sP.PosX == _rnd.Next(1, 10) && sP.PosY == _rnd.Next(1, 10) && sP.GameId == activeGameId);
             foreach (var shipPiece in shipPieces)
             {

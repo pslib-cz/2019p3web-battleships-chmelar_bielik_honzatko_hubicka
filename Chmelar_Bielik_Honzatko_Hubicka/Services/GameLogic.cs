@@ -37,7 +37,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
 
         public Game GetGame(Guid gameId)
         {
-            return _db.Games.Where(g => g.GameId == gameId).SingleOrDefault();
+            return _db.Games.Where(g => g.GameId == gameId).Include(g => g.GamePieces).SingleOrDefault();
         }
 
         public List<NavyBattlePiece> GetBattlefield() 
