@@ -13,14 +13,14 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
 {
     public class GameonModel : PageModel
     {
-        readonly GameLogic _gl;
+        readonly GameManipulator _gl;
         
         public string Color { get; set; } //Color of the cell.
         public List<NavyBattlePiece> Pieces { get; set; }
         public GameDeskModel GameDesk { get; set; }
         public string Text { get; set; }
 
-        public GameonModel(GameLogic gl)
+        public GameonModel(GameManipulator gl)
         {
             Color = "unknown";
             _gl = gl;

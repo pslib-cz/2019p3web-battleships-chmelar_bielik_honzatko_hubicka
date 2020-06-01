@@ -10,17 +10,15 @@ using System.Threading.Tasks;
 
 namespace Chmelar_Bielik_Honzatko_Hubicka.Services
 {
-    public class GameManipulator : IGameManipulator
+    public class GameManipulator : IGameManipulator, IGameLogic
     {
         readonly ApplicationDbContext _db;
-        readonly GameLogic _gl;
         readonly GameSessionStorage<Guid> _gss;
         readonly Random _rnd;
 
-        public GameManipulator(ApplicationDbContext db, GameLogic gl, GameSessionStorage<Guid> gss, Random rnd)
+        public GameManipulator(ApplicationDbContext db, GameSessionStorage<Guid> gss, Random rnd)
         {
             _db = db;
-            _gl = gl;
             _gss = gss;
             activeGameId = _gss.LoadGame("GameKey");
             activeUserId = _gss.GetUserId();
@@ -29,6 +27,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
 
         public Guid activeGameId { get; private set; }
         public string activeUserId { get; private set; }
+        private BattlePieceState state { get; set; }
 
         public bool InGame()
         {
@@ -37,7 +36,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
 
         public void GeneratorPieces()
         {
-            Game game = _gl.GetGame(activeGameId);
+            Game game = GetGame(activeGameId);
             NavyBattlePiece piece = new NavyBattlePiece();
             for (int i = 0; i < 100; i++)
             {
@@ -46,12 +45,13 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
                 piece.UserId = activeUserId;
                 piece.PosX = i % 10;
                 piece.PosY = i / 10;
+                piece.Game = game;
                 game.GamePieces.Add(piece);
                 _db.NavyBattlePieces.Add(piece);
             }
             _db.SaveChanges();
 
-            var shipPieces = _db.NavyBattlePieces.Where(sP => sP.PosX == _rnd.Next(1, 10) && sP.PosY == _rnd.Next(1, 10) && sP.GameId == activeGameId);
+            var shipPieces = _db.NavyBattlePieces.AsEnumerable().Where(sP => sP.PosX == _rnd.Next(1, 10) && sP.PosY == _rnd.Next(1, 10) && sP.GameId == activeGameId).ToList();
             foreach (var shipPiece in shipPieces)
             {
                 shipPiece.State = BattlePieceState.Ship;
@@ -61,7 +61,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
 
         public void JoinGame(Guid GameId)
         {
-            Game game = _gl.GetGame(GameId);
+            Game game = GetGame(GameId);
             game.PlayerId = activeUserId;
             game.PlayerState = PlayerState.PreperingForGame;
             GeneratorPieces();
@@ -108,13 +108,143 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             Game game = new Game();
             game.GameId = Guid.NewGuid();
             activeGameId = game.GameId;
-            _gss.SaveGame("GameKey", activeGameId);
             game.Gamestate = GameState.Preparing;
             game.OwnerId = activeUserId;
             game.OwnerState = PlayerState.PreperingForGame;
-            GeneratorPieces();
+            _gss.SaveGame("GameKey", activeGameId);
             _db.Games.Add(game);
             _db.SaveChanges();
+            GeneratorPieces();
+        }
+
+        public List<NavyBattlePiece> GetBattlePieces(Guid GameId)
+        {
+            var game = GetGame(GameId);
+
+            return _db.NavyBattlePieces.Where(p => p.GameId == game.GameId).OrderBy(p => p.PosX).OrderBy(p => p.PosY).ToList();
+        }
+
+        public Game GetGame(Guid gameId)
+        {
+            return _db.Games.Where(g => g.GameId == gameId).Include(g => g.GamePieces).SingleOrDefault();
+        }
+
+        public List<NavyBattlePiece> GetBattlefield()
+        {
+            var battlefield = GetBattlePieces(activeGameId);
+
+            return battlefield;
+        }
+
+        public void Hit(int pieceId)
+        {
+            var piece = _db.NavyBattlePieces.SingleOrDefault(p => p.Id == pieceId);
+
+
+            Game activeGame = GetGame(activeGameId);
+
+            Game hitUser = _db.Games.SingleOrDefault(u => u.CurrentPlayer.Id == activeUserId);
+            User hittedUser = _db.Users.Where(u => u.Id == piece.UserId).FirstOrDefault();
+
+            List<NavyBattlePiece> UnhittedPieces = _db.NavyBattlePieces.Where(p => p.UserId == piece.UserId && p.State == BattlePieceState.Ship).ToList();
+
+            if (activeGame.Gamestate == GameState.End || (activeGame.OwnerState != PlayerState.PreperingForGame || activeGame.PlayerState != PlayerState.PreperingForGame))
+            {
+                return;
+            }
+
+            else if (InGame())
+            {
+                hitUser.Gamestate = GameState.Fighting;
+
+                if (hitUser.CurrentPlayerId == hittedUser.Id)
+                {
+                    return;
+                }
+
+                else if (piece.State == BattlePieceState.Hitted_Ship || piece.State == BattlePieceState.Hitted_Water)
+                {
+                    return;
+                }
+
+                else if (piece.State == BattlePieceState.Ship)
+                {
+                    state = BattlePieceState.Hitted_Ship;
+                    if (UnhittedPieces.Count() < 2)
+                    {
+                        hittedUser.PlayerState = PlayerState.Lose;
+                        _db.Users.Update(hittedUser);
+                        _db.SaveChanges();
+                    }
+                }
+
+                else if (GameEnd(hitUser))
+                {
+                    return;
+                }
+
+                else if (piece.State == BattlePieceState.Water)
+                {
+                    state = BattlePieceState.Hitted_Water;
+                }
+
+                else if (piece.State != BattlePieceState.Water && piece.State != BattlePieceState.Ship)
+                {
+                    state = BattlePieceState.Unknown;
+                }
+
+                else
+                {
+                    ContinueInGame(hitUser);
+                }
+            }
+
+            else
+            {
+                return;
+            }
+            piece.State = state;
+            _db.NavyBattlePieces.Update(piece);
+            _db.SaveChanges();
+            _gss.SaveGame("GameKey", activeGameId);
+        }
+
+        private void ContinueInGame(Game hitUser)
+        {
+            int userRound = 0;
+
+            userRound++;
+            List<Game> listUsers = _db.Games.Where(u => u.GameId == hitUser.GameId).OrderBy(u => u.CurrentPlayerId).ToList();
+            Game nextPlayer = new Game();
+            int index = listUsers.FindIndex(u => u.CurrentPlayerId == hitUser.CurrentPlayerId);
+
+            if (userRound == 1)
+            {
+                nextPlayer.CurrentPlayer = listUsers[index++].CurrentPlayer;
+                userRound = 0;
+            }
+
+            else
+            {
+                nextPlayer.CurrentPlayer = listUsers[0].CurrentPlayer;
+            }
+
+            hitUser.CurrentPlayerId = nextPlayer.CurrentPlayerId;
+            userRound = 0;
+            _db.Games.Update(hitUser);
+        }
+
+        private bool GameEnd(Game winner)
+        {
+            if (winner.PlayerState != PlayerState.Lose)
+            {
+                winner.PlayerState = PlayerState.Win;
+                winner.Gamestate = GameState.End;
+                _db.Games.Update(winner);
+                _db.Users.Update(winner.CurrentPlayer);
+                return true;
+            }
+            return false;
         }
     }
 }
