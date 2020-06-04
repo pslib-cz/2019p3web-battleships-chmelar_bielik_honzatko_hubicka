@@ -17,7 +17,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
         
         public string Color { get; set; } //Color of the cell.
         public List<NavyBattlePiece> Pieces { get; set; }
-        public GameDeskModel GameDesk { get; set; }
+        public GameDeskModel GameDesk = new GameDeskModel();
         public string Text { get; set; }
 
         public GameonModel(GameManipulator gl)
