@@ -9,7 +9,7 @@
 <div class="Desk">
     <table class="table">
         <tbody>
-            @foreach (var row in pieces.OrderBy(p => new { p.PosY, p.PosX }).GroupBy(p => p.PosY))
+            @foreach (var row in pieces.GroupBy(p => p.PosY))
             {
                 <tr>
                     @foreach (var piece in row)

@@ -37,20 +37,22 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
         public void GeneratorPieces()
         {
             Game game = GetGame(activeGameId);
-            NavyBattlePiece piece = new NavyBattlePiece();
+            NavyBattlePiece piece;
             for (int i = 0; i < 100; i++)
             {
+                piece = new NavyBattlePiece(); // není to stále jen ten jeden dílek - je jich 100
                 piece.State = BattlePieceState.Water;
                 piece.GameId = activeGameId;
                 piece.UserId = activeUserId;
                 piece.PosX = i % 10;
                 piece.PosY = i / 10;
-                piece.Game = game;
-                game.GamePieces.Add(piece);
-                _db.NavyBattlePieces.Add(piece);
+                //piece.Game = game; to je zbytečné - už jsem nastavil GameId
+                //game.GamePieces.Add(piece); //dělám buď jedno
+                _db.NavyBattlePieces.Add(piece); //nebo druhé!
             }
             _db.SaveChanges();
 
+            //tohle nemůže fungovat - musí se na to jinak...
             var shipPieces = _db.NavyBattlePieces.AsEnumerable().Where(sP => sP.PosX == _rnd.Next(1, 10) && sP.PosY == _rnd.Next(1, 10) && sP.GameId == activeGameId).ToList();
             foreach (var shipPiece in shipPieces)
             {
@@ -122,7 +124,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
         {
             var game = GetGame(GameId);
 
-            return _db.NavyBattlePieces.Where(p => p.GameId == game.GameId).OrderBy(p => p.PosX).OrderBy(p => p.PosY).ToList();
+            return _db.NavyBattlePieces.Where(p => p.GameId == game.GameId).OrderBy(p => p.PosY).ThenBy(p => p.PosX).ToList();
         }
 
         public Game GetGame(Guid gameId)
