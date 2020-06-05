@@ -43,8 +43,11 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Pages
             OtherGames = _gameManipulator.JoinGamesList();
             UserId = _gss.GetUserId();
         }
-
-        public IActionResult OnPostRemoveGame(Guid id)
+         public IActionResult OnGetGame(Guid id)
+         {
+            return RedirectToPage("./Gameon");
+         }
+        public IActionResult OnGetRemoveGame(Guid id)
         {
             bool result = _gameManipulator.RemoveGame(id);
             if (result)
@@ -56,10 +59,10 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Pages
             {
                 MessageError = "Game was unable to be removed.";
             }
-            return RedirectToPage("/ActiveGames");
+            return RedirectToPage("./ActiveGames");
         }
 
-        public IActionResult OnPostJoinGame(Guid id)
+        public IActionResult OnGetJoinGame(Guid id)
         {
             _gameManipulator.JoinGame(id);
             return RedirectToPage("./Gameon");

@@ -28,27 +28,28 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.MyGameLists)
+                        @foreach (var item in Model.MyGames)
                         {
-                            <tr>
-                                <td>@item.Gamestate</td>
-                                <td>@item.OwnerId</td>
-                                <td>@item.PlayerId</td>
-                                <th></th>
-                            </tr>
+                        <tr>
+                            <td>@item.Gamestate</td>
+                            <td>@item.Owner.UserName</td>
+                            @if (item.Player != null)
+                            {
+                                <td>@item.Player.UserName</td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                            <th></th>
+                        </tr>
                         <td>
-                            <form method="post" asp-page-handler="JoinGame">
-                                <button class="btn btn-primary">Play</button>
-                                <input type="hidden" name="id" value="@item.GameId" />
-                            </form>
+                            <a class="btn btn-primary" asp-page-handler="Game" asp-route-id="@item.GameId">Play</a>
                         </td>
                         @if (Model.UserId == item.OwnerId)
                         {
                             <td>
-                                <form method="post" asp-page-handler="RemoveGame">
-                                    <button class="btn btn-danger">Delete</button>
-                                    <input type="hidden" name="id" value="@item.GameId" />
-                                </form>
+                                <a class="btn btn-danger" asp-page-handler="RemoveGame" asp-route-id="@item.GameId">Delete</a>
                             </td>
 
                         }
@@ -60,7 +61,6 @@
                         <thead>
                             <tr>
                                 <th>Game State</th>
-                                <th>Round</th>
                                 <th>Owner</th>
                                 <th>Current player</th>
                                 <th></th>
@@ -72,13 +72,17 @@
                             {
                             <tr>
                                 <td>@item.Gamestate</td>
-                                <td>@item.OwnerId</td>
-                                <td>@item.PlayerId</td>
+                                <td>@item.Owner.UserName</td>
+                                @if (item.Player != null)
+                                {
+                                    <td>@item.Player.UserName</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
                                 <td>
-                                    <form method="post" asp-page-handler="JoinGame" asp-action="btnRedirect">
-                                        <button class="btn btn-primary">Join</button>
-                                        <input type="hidden" name="id" value="@item.GameId" />
-                                    </form>
+                                    <a class="btn btn-primary" asp-page-handler="JoinGame" asp-route-id="@item.GameId">Join</a>
                                 </td>
                             </tr>
                             }

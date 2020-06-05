@@ -19,11 +19,13 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
         public List<NavyBattlePiece> Pieces { get; set; }
         public GameDeskModel GameDesk = new GameDeskModel();
         public string Text { get; set; }
+        public string PlayerId { get; set; }
 
         public GameonModel(GameManipulator gl)
         {
             Color = "unknown";
             _gl = gl;
+            PlayerId = _gl.GetGame(_gl.activeGameId).PlayerId;
         }
 
         public void OnGet()

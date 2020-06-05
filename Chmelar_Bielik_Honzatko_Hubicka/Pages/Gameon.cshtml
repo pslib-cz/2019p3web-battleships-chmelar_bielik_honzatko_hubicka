@@ -6,11 +6,15 @@
 
 <h1>Gameon</h1>
 
+
 <h3>Game has started!</h3>
 
-@{ string key = "messagebox"; }
-<partial name="_GameMessages" model="key" />
+@if (Model.PlayerId != null)
+{
+    string key = "messagebox";
+    <partial name="_GameMessages" model="key" />
 
-<partial name="_GameDesk" model="@Model.GameDesk" />
+    <partial name="_GameDesk" model="@Model.GameDesk" />
+}
 
 <a class="btn btn-success" href="./Gameon">Reload Page</a>

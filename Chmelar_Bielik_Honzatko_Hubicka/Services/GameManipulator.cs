@@ -64,10 +64,11 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             Game game = GetGame(GameId);
             game.PlayerId = activeUserId;
             game.PlayerState = PlayerState.PreperingForGame;
-            GeneratorPieces();
             activeGameId = game.GameId;
             _gss.SaveGame("GameKey", activeGameId);
             _db.Update(game);
+            _db.SaveChanges();
+            GeneratorPieces();
         }
 
         public List<Game> JoinGamesList()
