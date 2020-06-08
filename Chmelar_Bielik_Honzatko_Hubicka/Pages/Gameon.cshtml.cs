@@ -25,7 +25,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
         {
             Color = "unknown";
             _gl = gl;
-            PlayerId = _gl.GetGame(_gl.activeGameId).PlayerId;
+            PlayerId = _gl.activeUserId;
         }
 
         public void OnGet()

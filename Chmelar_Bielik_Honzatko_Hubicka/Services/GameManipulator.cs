@@ -46,9 +46,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
                 piece.UserId = activeUserId;
                 piece.PosX = i % 10;
                 piece.PosY = i / 10;
-                //piece.Game = game; to je zbytečné - už jsem nastavil GameId
-                //game.GamePieces.Add(piece); //dělám buď jedno
-                _db.NavyBattlePieces.Add(piece); //nebo druhé!
+                _db.NavyBattlePieces.Add(piece);
             }
             _db.SaveChanges();
 
@@ -63,14 +61,21 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
 
         public void JoinGame(Guid GameId)
         {
-            Game game = GetGame(GameId);
-            game.PlayerId = activeUserId;
-            game.PlayerState = PlayerState.PreperingForGame;
-            activeGameId = game.GameId;
-            _gss.SaveGame("GameKey", activeGameId);
-            _db.Update(game);
-            _db.SaveChanges();
-            GeneratorPieces();
+            if (InGame())
+            {
+                Game game = GetGame(GameId);
+                game.PlayerId = activeUserId;
+                game.PlayerState = PlayerState.PreperingForGame;
+                activeGameId = game.GameId;
+                _gss.SaveGame("GameKey", activeGameId);
+                _db.Update(game);
+                _db.SaveChanges();
+                GeneratorPieces();
+            }
+            else
+            {
+                return;
+            }
         }
 
         public List<Game> JoinGamesList()
@@ -123,8 +128,9 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
         public List<NavyBattlePiece> GetBattlePieces(Guid GameId)
         {
             var game = GetGame(GameId);
+            var UserId = activeUserId;
 
-            return _db.NavyBattlePieces.Where(p => p.GameId == game.GameId).OrderBy(p => p.PosY).ThenBy(p => p.PosX).ToList();
+            return _db.NavyBattlePieces.Where(p => p.GameId == game.GameId && p.UserId != UserId).OrderBy(p => p.PosY).ThenBy(p => p.PosX).ToList();
         }
 
         public Game GetGame(Guid gameId)

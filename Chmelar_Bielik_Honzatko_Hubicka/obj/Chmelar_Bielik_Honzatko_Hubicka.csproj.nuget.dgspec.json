@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Tomáš\\Source\\Repos\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka18\\Chmelar_Bielik_Honzatko_Hubicka\\Chmelar_Bielik_Honzatko_Hubicka.csproj": {}
+    "C:\\Users\\Tomáš\\Source\\Repos\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka21\\Chmelar_Bielik_Honzatko_Hubicka\\Chmelar_Bielik_Honzatko_Hubicka.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Tomáš\\Source\\Repos\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka18\\Chmelar_Bielik_Honzatko_Hubicka\\Chmelar_Bielik_Honzatko_Hubicka.csproj": {
+    "C:\\Users\\Tomáš\\Source\\Repos\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka21\\Chmelar_Bielik_Honzatko_Hubicka\\Chmelar_Bielik_Honzatko_Hubicka.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Tomáš\\Source\\Repos\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka18\\Chmelar_Bielik_Honzatko_Hubicka\\Chmelar_Bielik_Honzatko_Hubicka.csproj",
+        "projectUniqueName": "C:\\Users\\Tomáš\\Source\\Repos\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka21\\Chmelar_Bielik_Honzatko_Hubicka\\Chmelar_Bielik_Honzatko_Hubicka.csproj",
         "projectName": "Chmelar_Bielik_Honzatko_Hubicka",
-        "projectPath": "C:\\Users\\Tomáš\\Source\\Repos\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka18\\Chmelar_Bielik_Honzatko_Hubicka\\Chmelar_Bielik_Honzatko_Hubicka.csproj",
+        "projectPath": "C:\\Users\\Tomáš\\Source\\Repos\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka21\\Chmelar_Bielik_Honzatko_Hubicka\\Chmelar_Bielik_Honzatko_Hubicka.csproj",
         "packagesPath": "C:\\Users\\Tomáš\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Tomáš\\Source\\Repos\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka18\\Chmelar_Bielik_Honzatko_Hubicka\\obj\\",
+        "outputPath": "C:\\Users\\Tomáš\\Source\\Repos\\2019p3web-battleships-chmelar_bielik_honzatko_hubicka21\\Chmelar_Bielik_Honzatko_Hubicka\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
