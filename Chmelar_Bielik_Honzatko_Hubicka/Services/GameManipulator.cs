@@ -118,6 +118,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
             activeGameId = game.GameId;
             game.Gamestate = GameState.Preparing;
             game.OwnerId = activeUserId;
+            game.CurrentPlayerId = activeUserId;
             game.OwnerState = PlayerState.PreperingForGame;
             _gss.SaveGame("GameKey", activeGameId);
             _db.Games.Add(game);
@@ -152,7 +153,7 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
 
             Game activeGame = GetGame(activeGameId);
 
-            Game hitUser = _db.Games.SingleOrDefault(u => u.CurrentPlayer.Id == activeUserId);
+            Game hitUser = _db.Games.SingleOrDefault(u => u.CurrentPlayerId == activeUserId);
             User hittedUser = _db.Users.Where(u => u.Id == piece.UserId).FirstOrDefault();
 
             List<NavyBattlePiece> UnhittedPieces = _db.NavyBattlePieces.Where(p => p.UserId == piece.UserId && p.State == BattlePieceState.Ship).ToList();
@@ -164,9 +165,12 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
 
             else if (InGame())
             {
-                hitUser.Gamestate = GameState.Fighting;
+                if (hitUser.Gamestate != GameState.Fighting)
+                {
+                    hitUser.Gamestate = GameState.Fighting;
+                }
 
-                if (hitUser.CurrentPlayerId == hittedUser.Id)
+                else if (hitUser.CurrentPlayerId == hittedUser.Id)
                 {
                     return;
                 }
