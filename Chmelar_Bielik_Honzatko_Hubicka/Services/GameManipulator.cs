@@ -61,8 +61,6 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
 
         public void JoinGame(Guid GameId)
         {
-            if (InGame())
-            {
                 Game game = GetGame(GameId);
                 game.PlayerId = activeUserId;
                 game.PlayerState = PlayerState.PreperingForGame;
@@ -71,11 +69,6 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
                 _db.Update(game);
                 _db.SaveChanges();
                 GeneratorPieces();
-            }
-            else
-            {
-                return;
-            }
         }
 
         public List<Game> JoinGamesList()
@@ -153,7 +146,6 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
 
             Game activeGame = GetGame(activeGameId);
 
-            Game hitUser = _db.Games.SingleOrDefault(u => u.CurrentPlayerId == activeUserId);
             User hittedUser = _db.Users.Where(u => u.Id == piece.UserId).FirstOrDefault();
 
             List<NavyBattlePiece> UnhittedPieces = _db.NavyBattlePieces.Where(p => p.UserId == piece.UserId && p.State == BattlePieceState.Ship).ToList();
@@ -163,24 +155,27 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
                 return;
             }
 
-            else if (InGame())
+            if (!InGame())
             {
-                if (hitUser.Gamestate != GameState.Fighting)
+                return;
+            }
+
+                if (activeGame.Gamestate != GameState.Fighting)
                 {
-                    hitUser.Gamestate = GameState.Fighting;
+                    activeGame.Gamestate = GameState.Fighting;
                 }
 
-                else if (hitUser.CurrentPlayerId == hittedUser.Id)
-                {
-                    return;
-                }
-
-                else if (piece.State == BattlePieceState.Hitted_Ship || piece.State == BattlePieceState.Hitted_Water)
+                if (activeGame.CurrentPlayerId != activeUserId)
                 {
                     return;
                 }
 
-                else if (piece.State == BattlePieceState.Ship)
+                if (piece.State == BattlePieceState.Hitted_Ship || piece.State == BattlePieceState.Hitted_Water)
+                {
+                    return;
+                }
+
+                if (piece.State == BattlePieceState.Ship)
                 {
                     state = BattlePieceState.Hitted_Ship;
                     if (UnhittedPieces.Count() < 2)
@@ -191,31 +186,23 @@ namespace Chmelar_Bielik_Honzatko_Hubicka.Services
                     }
                 }
 
-                else if (GameEnd(hitUser))
+                if (GameEnd(activeGame))
                 {
                     return;
                 }
 
-                else if (piece.State == BattlePieceState.Water)
+                if (piece.State == BattlePieceState.Water)
                 {
                     state = BattlePieceState.Hitted_Water;
                 }
 
-                else if (piece.State != BattlePieceState.Water && piece.State != BattlePieceState.Ship)
-                {
-                    state = BattlePieceState.Unknown;
-                }
-
-                else
-                {
-                    ContinueInGame(hitUser);
-                }
-            }
-
-            else
+            if (piece.State != BattlePieceState.Water && piece.State != BattlePieceState.Ship)
             {
-                return;
+                state = BattlePieceState.Unknown;
             }
+
+            ContinueInGame(activeGame);
+
             piece.State = state;
             _db.NavyBattlePieces.Update(piece);
             _db.SaveChanges();

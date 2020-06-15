@@ -32,7 +32,11 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
         {
 
             Pieces = _gl.GetBattlefield();
+        }
 
+        public void OnGetHit(int pieceId)
+        {
+            _gl.Hit(pieceId);
             foreach (var p in Pieces)
             {
                 if (p.State == BattlePieceState.Hitted_Ship)
@@ -54,12 +58,6 @@ namespace Chmelar_Bielik_Honzatko_Hubicka
             }
 
             GameDesk.Pieces = Pieces;
-            GameDesk.Color = Color;
-        }
-
-        public void OnGetHit(int pieceId)
-        {
-            _gl.Hit(pieceId);
         }
 
         public void OnPost(string text)

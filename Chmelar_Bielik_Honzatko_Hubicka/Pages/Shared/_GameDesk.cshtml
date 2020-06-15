@@ -14,7 +14,7 @@
                 <tr>
                     @foreach (var piece in row)
                     {
-                        <td class="game-piece-@color">
+                        <td class="game-piece-@piece.State">
                             <a class="btn btn-outline-light" asp-page-handler="Hit" asp-route-pieceid="@piece.Id">[@piece.PosX, @piece.PosY]</a>
                         </td>
                     }
